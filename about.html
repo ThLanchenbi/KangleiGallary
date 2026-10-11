@@ -1,6 +1,120 @@
-node_modules/
-.firebase/
-*.log
-.DS_Store
-dist/
-.env
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - Kanglei Gallery</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    .about-container {
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+    }
+    .about-card {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+    }
+    .about-card h2 {
+      color: #4f46e5;
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+    }
+    .about-card p {
+      line-height: 1.6;
+      color: #4b5563;
+      margin-bottom: 1rem;
+    }
+    .submission-methods {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .sub-box {
+      border: 2px dashed #4f46e5;
+      padding: 1.5rem;
+      border-radius: 10px;
+      text-align: center;
+      background: #f8fafc;
+    }
+    .sub-box i {
+      font-size: 2.2rem;
+      color: #4f46e5;
+      margin-bottom: 0.8rem;
+    }
+    .sub-btn {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      background-color: #4f46e5;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .sub-btn:hover {
+      background-color: #4338ca;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <h1>About Kanglei Gallery</h1>
+    <p>Preserving and celebrating creative works</p>
+  </header>
+
+  <main class="about-container">
+    <!-- About Section -->
+    <section class="about-card">
+      <h2>Welcome to Kanglei Gallery</h2>
+      <p>
+        Kanglei Gallery is a dedicated platform designed to showcase local talents, traditional art, modern musical compositions, creative poetry, short stories, and published literary works.
+      </p>
+      <p>
+        Our platform operates as a community showcase where artists can submit their original items, and our admin team reviews and publishes them for the public to enjoy and comment on.
+      </p>
+    </section>
+
+    <!-- Submission Section -->
+    <section class="about-card">
+      <h2>How to Submit Your Content</h2>
+      <p>Artists can send their artwork, recordings, manuscript files, or descriptions using either of the following platforms:</p>
+
+      <div class="submission-methods">
+        <!-- Telegram Box -->
+        <div class="sub-box">
+          <i class="fa-brands fa-telegram"></i>
+          <h3>Telegram Channel</h3>
+          <p>Send your artistic media directly to our official Telegram channel or bot.</p>
+          <!-- TODO: Replace "YOUR_TELEGRAM_LINK_HERE" with your actual link later -->
+          <a href="YOUR_TELEGRAM_LINK_HERE" target="_blank" class="sub-btn">Join Telegram Channel</a>
+        </div>
+
+        <!-- Gmail Box -->
+        <div class="sub-box">
+          <i class="fa-solid fa-envelope"></i>
+          <h3>Gmail Submission</h3>
+          <p>Email your art files along with a short title, description, and bio.</p>
+          <!-- TODO: Replace "YOUR_EMAIL_HERE@gmail.com" with your actual address later -->
+          <a href="mailto:YOUR_EMAIL_HERE@gmail.com" class="sub-btn">Send Email</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom Navigation Link Bar -->
+  <footer class="bottom-nav">
+    <a href="register.html" class="nav-btn"><i class="fa-solid fa-user-plus"></i> Register</a>
+    <a href="login.html" class="nav-btn"><i class="fa-solid fa-right-to-bracket"></i> Log In</a>
+    <a href="index.html" class="nav-btn"><i class="fa-solid fa-house"></i> Home</a>
+  </footer>
+
+</body>
+</html>
