@@ -161,11 +161,15 @@
                 readerBody.innerHTML = '<h3 style="color: white;">No PDF file specified.</h3>';
                 return;
             }
-            // Appends page number and disables native browser PDF toolbar
-            const securePdfUrl = `${pdfFile}#page=${page}&toolbar=0&navpanes=0&scrollbar=1`;
+
+            // Build full absolute URL so mobile browsers can locate the PDF file accurately
+            const fullPdfUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) + '/' + pdfFile;
+            
+            // Mobile-friendly wrapper URL
+            const mobileFriendlyUrl = `https://docs.google.com/gview?url=${encodeURIComponent(fullPdfUrl)}&embedded=true#page=${page}`;
             
             readerBody.innerHTML = `
-                <iframe id="pdfFrame" class="pdf-frame" src="${securePdfUrl}"></iframe>
+                <iframe id="pdfFrame" class="pdf-frame" src="${mobileFriendlyUrl}"></iframe>
             `;
         }
 
