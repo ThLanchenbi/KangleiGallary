@@ -1,214 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kanglei Gallery</title>
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --accent-color: #e67e22;
-            --bg-color: #f4f7f6;
-            --card-bg: #ffffff;
-            --text-color: #333333;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-        }
-
-        header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 1.8rem;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 1.5rem;
-            font-weight: 500;
-        }
-
-        nav a:hover {
-            color: var(--accent-color);
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        .hero {
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            color: white;
-            padding: 3rem 2rem;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .section-title {
-            border-bottom: 3px solid var(--accent-color);
-            display: inline-block;
-            padding-bottom: 0.3rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        .card h3 {
-            margin-top: 0;
-            color: var(--primary-color);
-        }
-
-        .comment-section {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        .comment-form input, 
-        .comment-form textarea {
-            width: 100%;
-            padding: 0.8rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        .comment-form button {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .comment-form button:hover {
-            background-color: #d35400;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            background-color: var(--primary-color);
-            color: white;
-            margin-top: 3rem;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kanglei Gallery</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- FontAwesome for Category Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-    <header>
-        <h1>Kanglei Gallery</h1>
-        <nav>
-            <a href="#about">About</a>
-            <a href="#stories">Stories & Books</a>
-            <a href="#ai-products">AI Works</a>
-            <a href="#songs">Songs</a>
-            <a href="#mapao">Lakanungi Mapao</a>
-            <a href="#community">Community</a>
-        </nav>
-    </header>
+  <!-- Top Header -->
+  <header class="header">
+    <h1>🎨 Kanglei Gallery</h1>
+    <p>A home for traditional and contemporary art, music, & literature</p>
+  </header>
 
-    <div class="container">
-        
-        <!-- Hero / Welcome Banner -->
-        <section class="hero">
-            <h2>Welcome to Kanglei Gallery</h2>
-            <p>A hub for stories, music, creative AI products, local news updates, and community dialogue.</p>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" style="margin-bottom: 3rem;">
-            <h2 class="section-title">About Kanglei Gallery</h2>
-            <p>Kanglei Gallery is a creative digital space dedicated to presenting local culture, contemporary literature, AI-enhanced artistic products, music releases, and regional news updates (Lakanungi Mapao). Our mission is to build an open platform where creators and community members can share their works, thoughts, and ideologies.</p>
-        </section>
-
-        <!-- Content Showcases -->
-        <h2 class="section-title">Featured Works</h2>
-        <div class="grid">
-            
-            <!-- Short Stories & Books -->
-            <div class="card" id="stories">
-                <h3>Short Stories & Books</h3>
-                <p>Explore original short fiction, cultural narratives, and published literary works from local authors.</p>
-                <a href="#" style="color: var(--accent-color); font-weight: bold;">Browse Library &rarr;</a>
-            </div>
-
-            <!-- AI Products -->
-            <div class="card" id="ai-products">
-                <h3>AI Generated Products</h3>
-                <p>Discover digital artwork, generated concepts, and tech-driven designs created using modern AI toolsets.</p>
-                <a href="#" style="color: var(--accent-color); font-weight: bold;">View Gallery &rarr;</a>
-            </div>
-
-            <!-- Songs -->
-            <div class="card" id="songs">
-                <h3>Music & Songs</h3>
-                <p>Listen to traditional tracks, modern compositions, and community audio submissions.</p>
-                <a href="#" style="color: var(--accent-color); font-weight: bold;">Listen Now &rarr;</a>
-            </div>
-
-            <!-- Lakanungi Mapao -->
-            <div class="card" id="mapao">
-                <h3>Lakanungi Mapao</h3>
-                <p>Stay updated with local news items, announcements, and important updates from around the area.</p>
-                <a href="#" style="color: var(--accent-color); font-weight: bold;">Read Updates &rarr;</a>
-            </div>
-
-        </div>
-
-        <!-- Community & Ideology Sharing -->
-        <section class="comment-section" id="community">
-            <h2 class="section-title">Community Ideologies & Comments</h2>
-            <p>Share your views, discuss local perspectives, or submit your feedback to the community board.</p>
-
-            <form class="comment-form" action="#" method="POST" onsubmit="event.preventDefault(); alert('Comment submitted for review!');">
-                <input type="text" placeholder="Your Name or Alias" required>
-                <input type="email" placeholder="Your Email (Optional)">
-                <textarea rows="4" placeholder="Share your thoughts, ideology, or comments..." required></textarea>
-                <button type="submit">Publish Comment</button>
-            </form>
-        </section>
-
+  <!-- Gallery Categories Grid -->
+  <main class="gallery-container">
+    <div class="category-card" onclick="location.href='songs.html'">
+      <i class="fa-solid fa-music category-icon"></i>
+      <h3>Song Gallery</h3>
+      <p>Explore original compositions, folk tracks, and audio art.</p>
     </div>
 
-    <footer>
-        <p>&copy; 2026 Kanglei Gallery. All rights reserved.</p>
-    </footer>
+    <div class="category-card" onclick="location.href='stories.html'">
+      <i class="fa-solid fa-book-open-reader category-icon"></i>
+      <h3>Short Stories Gallery</h3>
+      <p>Read inspiring narrative prose and short creative stories.</p>
+    </div>
+
+    <div class="category-card" onclick="location.href='poems.html'">
+      <i class="fa-solid fa-feather-pointed category-icon"></i>
+      <h3>Poems Gallery</h3>
+      <p>Discover emotional verse, modern poetry, and classical literature.</p>
+    </div>
+
+    <div class="category-card" onclick="location.href='books.html'">
+      <i class="fa-solid fa-book category-icon"></i>
+      <h3>Books Gallery</h3>
+      <p>Browse published books, digital manuscripts, and full works.</p>
+    </div>
+
+    <div class="category-card" onclick="location.href='comments.html'">
+      <i class="fa-solid fa-comments category-icon"></i>
+      <h3>Public Comments</h3>
+      <p>Join the conversation and post community feedback.</p>
+    </div>
+  </main>
+
+  <!-- Bottom Navigation Link Bar -->
+  <footer class="bottom-nav">
+    <a href="register.html" class="nav-btn"><i class="fa-solid fa-user-plus"></i> Register</a>
+    <a href="login.html" class="nav-btn"><i class="fa-solid fa-right-to-bracket"></i> Log In</a>
+    <a href="about.html" class="nav-btn"><i class="fa-solid fa-circle-info"></i> About</a>
+  </footer>
 
 </body>
 </html>
