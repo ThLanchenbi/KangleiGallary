@@ -1,7 +1,5 @@
-// Import Firebase SDK modules (CDN version)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 // TODO: Replace with your project's correct Firebase configuration keys
 const firebaseConfig = {
@@ -13,12 +11,28 @@ const firebaseConfig = {
   appId: "YOUR_APP_ID"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
 
-// Handle Login Form Submission if present on page
+// Handle Registration Form
+const registerForm = document.getElementById("registerForm");
+if (registerForm) {
+  registerForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("regEmail").value;
+    const password = document.getElementById("regPassword").value;
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      alert("Registration successful! Welcome to Kanglei Gallery.");
+      window.location.href = "index.html";
+    } catch (error) {
+      alert("Error registering: " + error.message);
+    }
+  });
+}
+
+// Handle Login Form
 const loginForm = document.getElementById("loginForm");
 if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
@@ -28,8 +42,8 @@ if (loginForm) {
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      alert("Successfully logged in as: " + userCredential.user.email);
-      window.location.href = "index.html"; // Redirect back home
+      alert("Logged in successfully!");
+      window.location.href = "index.html";
     } catch (error) {
       alert("Error logging in: " + error.message);
     }
