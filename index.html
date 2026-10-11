@@ -1,27 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kanglei Gallery</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- FontAwesome for Category Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
-
-  <!-- Top Header -->
-  <header class="header">
-    <h1>🎨 Kanglei Gallery</h1>
-    <p>A home for traditional and contemporary art, music, & literature</p>
-  </header>
-
-  <!-- Gallery Categories Grid -->
+<!-- Gallery Categories Grid -->
   <main class="gallery-container">
     <div class="category-card" onclick="location.href='songs.html'">
       <i class="fa-solid fa-music category-icon"></i>
       <h3>Song Gallery</h3>
       <p>Explore original compositions, folk tracks, and audio art.</p>
+    </div>
+
+    <!-- NEW: Video Gallery Card -->
+    <div class="category-card" onclick="location.href='videos.html'">
+      <i class="fa-solid fa-clapperboard category-icon"></i>
+      <h3>Video Gallery</h3>
+      <p>Watch short films, visual performances, and artistic video logs.</p>
     </div>
 
     <div class="category-card" onclick="location.href='stories.html'">
@@ -48,13 +37,3 @@
       <p>Join the conversation and post community feedback.</p>
     </div>
   </main>
-
-  <!-- Bottom Navigation Link Bar -->
-  <footer class="bottom-nav">
-    <a href="register.html" class="nav-btn"><i class="fa-solid fa-user-plus"></i> Register</a>
-    <a href="login.html" class="nav-btn"><i class="fa-solid fa-right-to-bracket"></i> Log In</a>
-    <a href="about.html" class="nav-btn"><i class="fa-solid fa-circle-info"></i> About</a>
-  </footer>
-
-</body>
-</html>
