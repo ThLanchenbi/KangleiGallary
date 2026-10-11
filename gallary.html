@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Tambola House</title>
+    <title>Dashboard - Creative Library</title>
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -64,8 +64,8 @@
             background: #b82d2a;
         }
 
-        /* HERO LIVE GAME BANNER */
-        .live-game-banner {
+        /* HERO BANNER */
+        .hero-banner {
             background: linear-gradient(135deg, #1f6feb 0%, #1a4fba 100%);
             border-radius: 16px;
             padding: 28px;
@@ -91,7 +91,7 @@
             font-size: 0.95rem;
         }
 
-        .btn-live-game {
+        .btn-hero {
             background: #238636;
             color: #ffffff;
             text-decoration: none;
@@ -107,7 +107,7 @@
             white-space: nowrap;
         }
 
-        .btn-live-game:hover {
+        .btn-hero:hover {
             background: #2ea043;
             transform: translateY(-2px);
         }
@@ -143,7 +143,7 @@
         }
 
         .card-value {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: #ffffff;
             margin-bottom: 16px;
@@ -170,13 +170,13 @@
         }
 
         @media (max-width: 600px) {
-            .live-game-banner {
+            .hero-banner {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 20px;
             }
 
-            .btn-live-game {
+            .btn-hero {
                 width: 100%;
                 justify-content: center;
             }
@@ -188,101 +188,60 @@
 <div class="container">
     <!-- HEADER -->
     <div class="header">
-        <h2><i class="fas fa-cubes" style="color: #388bfd;"></i> Tambola House</h2>
-        <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        <h2><i class="fas fa-book-reader" style="color: #388bfd;"></i> Creative Hub</h2>
+        <a href="login.html" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
 
-    <!-- LIVE GAME HERO BANNER -->
-    <div class="live-game-banner">
+    <!-- HERO BANNER -->
+    <div class="hero-banner">
         <div class="banner-content">
-            <h1><i class="fas fa-dice" style="color: #58a6ff;"></i> Live Game is Ready!</h1>
-            <p>Join the live room to track drawn numbers and check your tickets in real time.</p>
+            <h1><i class="fas fa-feather-alt" style="color: #58a6ff;"></i> Explore Stories & Poetry</h1>
+            <p>Discover collection of books, short stories, poems, and insightful articles.</p>
         </div>
-        <a href="game.html" class="btn-live-game">
-            <i class="fas fa-gamepad"></i> GO TO GAME
+        <a href="story.html" class="btn-hero">
+            <i class="fas fa-book-open"></i> READ STORIES
         </a>
     </div>
 
     <!-- DASHBOARD NAVIGATION GRID -->
     <div class="grid">
-        <!-- MY TOKENS -->
+        <!-- POEMS -->
         <div class="card">
             <div>
-                <div class="card-title"><i class="fas fa-coins" style="color: #e3b341;"></i> Available Balance</div>
-                <div class="card-value" id="userTokens">0 Tokens</div>
+                <div class="card-title"><i class="fas fa-pen-nib" style="color: #e3b341;"></i> Poetry</div>
+                <div class="card-value">Poems Collection</div>
             </div>
-            <a href="deposit-request.html" class="card-btn"><i class="fas fa-plus-circle"></i> Add Tokens</a>
+            <a href="poem.html" class="card-btn"><i class="fas fa-arrow-right"></i> Read Poems</a>
         </div>
 
-        <!-- TICKET BOOKING -->
+        <!-- STORIES -->
         <div class="card">
             <div>
-                <div class="card-title"><i class="fas fa-ticket-alt" style="color: #388bfd;"></i> My Tickets</div>
-                <div class="card-value" id="userTicketCount">0 Tickets</div>
+                <div class="card-title"><i class="fas fa-book-open" style="color: #388bfd;"></i> Short Stories</div>
+                <div class="card-value">Story Corner</div>
             </div>
-            <a href="book-tickets.html" class="card-btn"><i class="fas fa-shopping-cart"></i> Book Tickets</a>
+            <a href="story.html" class="card-btn"><i class="fas fa-arrow-right"></i> Read Stories</a>
         </div>
 
-        <!-- ADMIN ACCESS -->
+        <!-- BOOKS -->
         <div class="card">
             <div>
-                <div class="card-title"><i class="fas fa-user-shield" style="color: #f85149;"></i> Host & Admin</div>
-                <div class="card-value" style="font-size: 1.2rem; margin-top: 10px;">Admin Portal</div>
+                <div class="card-title"><i class="fas fa-book" style="color: #2ea043;"></i> Books</div>
+                <div class="card-value">Digital Library</div>
             </div>
-            <a href="admin.html" class="card-btn"><i class="fas fa-cog"></i> Open Admin</a>
+            <a href="book.html" class="card-btn"><i class="fas fa-arrow-right"></i> Browse Books</a>
+        </div>
+
+        <!-- ARTICLES / MORE -->
+        <div class="card">
+            <div>
+                <div class="card-title"><i class="fas fa-newspaper" style="color: #f85149;"></i> Articles</div>
+                <div class="card-value">Featured Reads</div>
+            </div>
+            <a href="article.html" class="card-btn"><i class="fas fa-arrow-right"></i> Read Articles</a>
         </div>
     </div>
 </div>
 
-<!-- FIREBASE SDKs -->
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-
-<script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyDV5yQ1F18vYtaaEy4ac31LXplCkTr2U6A",
-        authDomain: "tambola-house-3dc56.firebaseapp.com",
-        projectId: "tambola-house-3dc56",
-        storageBucket: "tambola-house-3dc56.firebasestorage.app",
-        messagingSenderId: "267918174188",
-        appId: "1:267918174188:web:ec27684544c286c044c2c9"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-
-    auth.onAuthStateChanged((user) => {
-        if (!user) {
-            window.location.href = "login.html";
-            return;
-        }
-        loadUserData(user.uid);
-    });
-
-    /* REALTIME USER BALANCE & TICKET COUNT STREAM */
-    function loadUserData(uid) {
-        // Stream Tokens Balance
-        db.collection("users").doc(uid).onSnapshot((doc) => {
-            if (doc.exists) {
-                const data = doc.data();
-                document.getElementById("userTokens").textContent = `${data.tokens || 0} Tokens`;
-            }
-        });
-
-        // Stream Purchased Tickets Count
-        db.collection("tickets").where("userId", "==", uid).onSnapshot((snapshot) => {
-            document.getElementById("userTicketCount").textContent = `${snapshot.size} Tickets`;
-        });
-    }
-
-    /* LOGOUT */
-    function logout() {
-        auth.signOut().then(() => {
-            window.location.href = "login.html";
-        });
-    }
-</script>
 </body>
 </html>
