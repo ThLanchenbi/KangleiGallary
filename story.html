@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Books Gallery - Kanglei Gallery</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    .section-header {
+      text-align: center;
+      margin: 2rem 0;
+      color: #1f2937;
+    }
+    .books-container {
+      max-width: 900px;
+      margin: 0 auto 3rem auto;
+      padding: 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .book-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .book-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+    }
+    .book-icon {
+      font-size: 3rem;
+      color: #4f46e5;
+      background: #eef2ff;
+      padding: 1.2rem;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 70px;
+    }
+    .book-details {
+      flex-grow: 1;
+    }
+    .book-title {
+      font-size: 1.3rem;
+      color: #1f2937;
+      margin-bottom: 0.3rem;
+    }
+    .book-description {
+      color: #6b7280;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+    .read-btn {
+      padding: 0.6rem 1.2rem;
+      background-color: #4f46e5;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      transition: background-color 0.2s ease;
+    }
+    .read-btn:hover {
+      background-color: #4338ca;
+    }
+    @media (max-width: 600px) {
+      .book-card {
+        flex-direction: column;
+        text-align: center;
+      }
+      .read-btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header class="header">
+    <h1>📚 Books Gallery</h1>
+    <p>Discover classical and contemporary literary works</p>
+  </header>
+
+  <h2 class="section-header">Featured Book Collection</h2>
+
+  <!-- List of Books -->
+  <main class="books-container">
+
+    <!-- Book 1 -->
+    <div class="book-card">
+      <div class="book-icon">
+        <i class="fa-solid fa-book-open"></i>
+      </div>
+      <div class="book-details">
+        <h3 class="book-title">Angangi Wari Macha</h3>
+        <p class="book-description">A collection of delightful short stories and folk tales meant for children and young readers.</p>
+      </div>
+      <a href="#" class="read-btn"><i class="fa-solid fa-book-reader"></i> Read Details</a>
+    </div>
+
+    <!-- Book 2 -->
+    <div class="book-card">
+      <div class="book-icon">
+        <i class="fa-solid fa-book-open"></i>
+      </div>
+      <div class="book-details">
+        <h3 class="book-title">Wakhal Khudum Chanba</h3>
+        <p class="book-description">An insightful book exploring philosophical thoughts, life lessons, and deep reflection.</p>
+      </div>
+      <a href="#" class="read-btn"><i class="fa-solid fa-book-reader"></i> Read Details</a>
+    </div>
+
+    <!-- Book 3 -->
+    <div class="book-card">
+      <div class="book-icon">
+        <i class="fa-solid fa-book-open"></i>
+      </div>
+      <div class="book-details">
+        <h3 class="book-title">Nungaiba Thiba</h3>
+        <p class="book-description">A creative literary piece focused on the search for peace, joy, and spiritual fulfillment.</p>
+      </div>
+      <a href="#" class="read-btn"><i class="fa-solid fa-book-reader"></i> Read Details</a>
+    </div>
+
+    <!-- Book 4 -->
+    <div class="book-card">
+      <div class="book-icon">
+        <i class="fa-solid fa-book-open"></i>
+      </div>
+      <div class="book-details">
+        <h3 class="book-title">Awaba Kaonba Upai</h3>
+        <p class="book-description">An inspiring guide offering wisdom and perspective on overcoming life's hardships and challenges.</p>
+      </div>
+      <a href="#" class="read-btn"><i class="fa-solid fa-book-reader"></i> Read Details</a>
+    </div>
+
+  </main>
+
+  <!-- Bottom Navigation Link Bar -->
+  <footer class="bottom-nav">
+    <a href="register.html" class="nav-btn"><i class="fa-solid fa-user-plus"></i> Register</a>
+    <a href="login.html" class="nav-btn"><i class="fa-solid fa-right-to-bracket"></i> Log In</a>
+    <a href="index.html" class="nav-btn"><i class="fa-solid fa-house"></i> Home</a>
+  </footer>
+
+</body>
+</html>
