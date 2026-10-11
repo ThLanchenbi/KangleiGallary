@@ -14,8 +14,6 @@
             --text-main: #2d3436;
             --text-muted: #636e72;
             --nav-bg: #4b65f6;
-            --reader-bg: #ffffff;
-            --reader-text: #2d3436;
         }
 
         body.dark-mode {
@@ -23,8 +21,6 @@
             --card-bg: #1e1e1e;
             --text-main: #e0e0e0;
             --text-muted: #a0a0a0;
-            --reader-bg: #181818;
-            --reader-text: #e0e0e0;
         }
 
         * {
@@ -148,7 +144,8 @@
             font-weight: 700;
             color: var(--text-main);
             margin-bottom: 6px;
-            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .book-title:hover {
@@ -174,79 +171,11 @@
             align-items: center;
             gap: 8px;
             white-space: nowrap;
+            text-decoration: none;
         }
 
         .btn-read:hover {
             background-color: var(--primary-hover);
-        }
-
-        /* Reader Overlay / PDF Viewer */
-        .reader-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: var(--reader-bg);
-            z-index: 1000;
-            display: none;
-            flex-direction: column;
-        }
-
-        .reader-overlay.active {
-            display: flex;
-        }
-
-        .reader-header {
-            background: var(--card-bg);
-            border-bottom: 1px solid #ddd;
-            padding: 15px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 10;
-        }
-
-        .reader-header-actions {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .icon-btn {
-            background: none;
-            border: none;
-            font-size: 1rem;
-            color: var(--text-main);
-            cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .icon-btn:hover {
-            background-color: rgba(0,0,0,0.08);
-        }
-
-        .reader-body {
-            flex: 1;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px;
-            overflow: hidden;
-        }
-
-        .pdf-frame {
-            width: 100%;
-            max-width: 1000px;
-            height: 100%;
-            border: none;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         /* Bottom Nav */
@@ -302,27 +231,7 @@
 
         <!-- Book List -->
         <div class="book-list" id="bookList">
-            <!-- Books injected dynamically -->
-        </div>
-    </div>
-
-    <!-- PDF Reader Modal -->
-    <div class="reader-overlay" id="readerOverlay">
-        <div class="reader-header">
-            <button class="icon-btn" onclick="closeReader()">
-                <i class="fa-solid fa-arrow-left"></i> Back to Gallery
-            </button>
-            <div class="reader-header-actions">
-                <a id="downloadBtn" href="#" download class="icon-btn" style="text-decoration: none;">
-                    <i class="fa-solid fa-download"></i> Download PDF
-                </a>
-                <button class="icon-btn" onclick="toggleDarkMode()">
-                    <i class="fa-solid fa-moon"></i>
-                </button>
-            </div>
-        </div>
-        <div class="reader-body" id="readerBody">
-            <!-- PDF Viewer dynamic iframe -->
+            <!-- Books dynamically rendered via JavaScript -->
         </div>
     </div>
 
@@ -334,35 +243,31 @@
     </div>
 
     <script>
-        // Array of books with PDF URLs
+        // Book database with direct PDF paths
         const books = [
             {
                 id: 1,
                 title: "Meetei Laining Ahanba",
-                author: "Traditional Literature",
                 description: "Meetei Laininglon Ahoupa (Ahanba) - An insightful book exploring sacred teachings and history.",
-                pdfUrl: "assets/laining1.pdf" // Direct link to your uploaded file in the assets folder
+                pdfUrl: "assets/laining1.pdf"
             },
             {
                 id: 2,
                 title: "Angangi Wari Macha",
-                author: "Folk Tale Collection",
                 description: "A collection of delightful short stories and folk tales meant for children and young readers.",
-                pdfUrl: "pdfUrl: "assets/laining1.pdf" // Replace with your uploaded PDF filename when available
+                pdfUrl: "assets/angangi_wari_macha.pdf"
             },
             {
                 id: 3,
                 title: "Wakhal Khudum Chanba",
-                author: "Philosophical Essays",
                 description: "An insightful book exploring philosophical thoughts, life lessons, and deep reflection.",
-                pdfUrl: "assets/wakhal_khudum_chanba.pdf" // Replace with your uploaded PDF filename when available
+                pdfUrl: "assets/wakhal_khudum_chanba.pdf"
             },
             {
                 id: 4,
                 title: "Nungaiba Thiba",
-                author: "Literary Collection",
                 description: "A creative literary piece focused on the search for peace, joy, and spiritual fulfillment.",
-                pdfUrl: "assets/nungaiba_thiba.pdf" // Replace with your uploaded PDF filename when available
+                pdfUrl: "assets/nungaiba_thiba.pdf"
             }
         ];
 
@@ -379,18 +284,18 @@
                         <i class="fa-solid fa-file-pdf"></i>
                     </div>
                     <div class="book-info">
-                        <div class="book-title" onclick="openReader(${book.id})">${book.title}</div>
+                        <a href="read.html?file=${encodeURIComponent(book.pdfUrl)}" class="book-title">${book.title}</a>
                         <div class="book-desc">${book.description}</div>
                     </div>
-                    <button class="btn-read" onclick="openReader(${book.id})">
-                        <i class="fa-solid fa-book-open"></i> Read Book
-                    </button>
+                    <a href="read.html?file=${encodeURIComponent(book.pdfUrl)}" class="btn-read">
+                        <i class="fa-solid fa-book-open"></i> Read Details
+                    </a>
                 `;
                 container.appendChild(card);
             });
         }
 
-        // Search Filter
+        // Filter Books on search
         function filterBooks() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const filtered = books.filter(b => 
@@ -400,41 +305,7 @@
             renderBooks(filtered);
         }
 
-        // Open PDF Reader
-        function openReader(bookId) {
-            const book = books.find(b => b.id === bookId);
-            if (!book) return;
-
-            const readerBody = document.getElementById('readerBody');
-            const downloadBtn = document.getElementById('downloadBtn');
-
-            // Set download link
-            downloadBtn.href = book.pdfUrl;
-
-            // Embed PDF viewer via iframe
-            readerBody.innerHTML = `
-                <iframe class="pdf-frame" src="${book.pdfUrl}">
-                    <p>Your browser does not support inline PDFs. <a href="${book.pdfUrl}">Click here to view/download the PDF.</a></p>
-                </iframe>
-            `;
-
-            document.getElementById('readerOverlay').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        // Close PDF Reader
-        function closeReader() {
-            document.getElementById('readerOverlay').classList.remove('active');
-            document.body.style.overflow = 'auto';
-            document.getElementById('readerBody').innerHTML = ''; // Clear iframe on close
-        }
-
-        // Toggle Dark Theme
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-        }
-
-        // Initialize page
+        // Initialize display
         renderBooks(books);
     </script>
 </body>
