@@ -198,7 +198,7 @@
                     <i class="fa-solid fa-list-music text-indigo-400"></i>
                     <span>Playlist Queue</span>
                 </h2>
-                <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">3 Tracks</span>
+                <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">4 Tracks</span>
             </div>
 
             <!-- Queue Container -->
@@ -268,6 +268,28 @@
                         </button>
                     </div>
                 </div>
+
+                <!-- Playlist Item 4 (Newly Added Song) -->
+                <div class="playlist-item group flex items-center justify-between p-3 rounded-2xl glass-card hover:bg-white/10 transition cursor-pointer border border-white/5" data-index="3">
+                    <div class="flex items-center space-x-4 overflow-hidden">
+                        <div class="relative w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-gray-800">
+                            <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=200&auto=format&fit=crop&q=80" alt="Thumbnail" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                                <i class="fa-solid fa-play text-white text-xs"></i>
+                            </div>
+                        </div>
+                        <div class="overflow-hidden">
+                            <h3 class="font-semibold text-sm text-white truncate group-hover:text-indigo-400 transition">Cartoon - On & On [NCS Release]</h3>
+                            <p class="text-xs text-gray-400 truncate mt-0.5">NoCopyrightSounds • 3:28</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3 flex-shrink-0 pl-2">
+                        <span class="text-xs text-gray-400 font-medium">3:28</span>
+                        <button class="text-gray-500 hover:text-white p-1">
+                            <i class="fa-solid fa-ellipsis-vertical text-sm"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <!-- Hidden YouTube Iframe Player Container -->
@@ -305,6 +327,14 @@
                 durationSec: 261,
                 videoId: "bM7SZ5SBzyY",
                 cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&auto=format&fit=crop&q=80"
+            },
+            {
+                title: "Cartoon - On & On [NCS Release]",
+                artist: "NoCopyrightSounds",
+                duration: "3:28",
+                durationSec: 208,
+                videoId: "K4DyBUG242c",
+                cover: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=400&auto=format&fit=crop&q=80"
             }
         ];
 
