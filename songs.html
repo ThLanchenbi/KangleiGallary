@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraSound - Modern Music Experience</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#0b0f19',
+                            800: '#111827',
+                            700: '#1f2937',
+                            600: '#374151',
+                        }
+                    },
+                    animation: {
+                        'spin-slow': 'spin 8s linear infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Glassmorphism effects */
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(31, 41, 55, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(17, 24, 39, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-dark-900 text-gray-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+    <!-- Background Ambient Gradients -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/20 rounded-full blur-[120px]"></div>
+        <div class="absolute top-1/2 -right-40 w-96 h-96 bg-purple-600/20 rounded-full blur-[120px]"></div>
+        <div class="absolute -bottom-40 left-1/3 w-96 h-96 bg-pink-600/15 rounded-full blur-[120px]"></div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="relative z-10 w-full border-b border-gray-800/60 bg-dark-900/60 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                    <i class="fa-solid fa-wave-square text-white text-lg"></i>
+                </div>
+                <span class="text-xl font-bold bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent tracking-wide">AuraSound</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="px-4 py-2 text-sm font-medium rounded-full bg-gray-800/80 hover:bg-gray-700 transition border border-gray-700/50 flex items-center space-x-2 text-gray-300 hover:text-white">
+                    <i class="fa-brands fa-youtube text-red-500"></i>
+                    <span>YouTube Audio Engine</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="relative z-10 flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <!-- Left Column: Player Display & Visualizer (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col items-center justify-center space-y-8">
+            
+            <!-- Vinyl Disk & Cover Art Container -->
+            <div class="relative w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center">
+                <!-- Glowing Aura Behind Disk -->
+                <div id="glowAura" class="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-500 to-pink-500 opacity-40 blur-2xl transition-all duration-700 animate-pulse-slow"></div>
+
+                <!-- Vinyl Record Background (Rotates when playing) -->
+                <div id="vinylRecord" class="absolute inset-0 rounded-full bg-black border-4 border-gray-800 shadow-2xl flex items-center justify-center transition-transform duration-500">
+                    <!-- Vinyl Grooves -->
+                    <div class="absolute inset-2 rounded-full border border-gray-800/80"></div>
+                    <div class="absolute inset-8 rounded-full border border-gray-800/80"></div>
+                    <div class="absolute inset-14 rounded-full border border-gray-800/80"></div>
+                    <div class="absolute inset-20 rounded-full border border-gray-800/80"></div>
+                    <!-- Vinyl Label Center -->
+                    <div class="absolute w-24 h-24 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center border-4 border-black">
+                        <div class="w-4 h-4 rounded-full bg-black border-2 border-gray-400"></div>
+                    </div>
+                </div>
+
+                <!-- Floating Glass Cover Art Over Vinyl -->
+                <div class="relative z-10 w-48 h-48 sm:w-56 sm:h-56 rounded-2xl overflow-hidden shadow-2xl border border-white/10 glass-panel group">
+                    <img id="currentAlbumArt" src="https://placehold.co/400x400/1f2937/ffffff?text=Loading..." alt="Album Art" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
+                </div>
+            </div>
+
+            <!-- Song Metadata & Equalizer -->
+            <div class="text-center space-y-3 w-full max-w-md">
+                <div class="flex justify-center items-center space-x-1.5 h-6 mb-1" id="equalizerBars">
+                    <span class="w-1 bg-indigo-500 rounded-full h-2 transition-all duration-300"></span>
+                    <span class="w-1 bg-purple-500 rounded-full h-4 transition-all duration-300"></span>
+                    <span class="w-1 bg-pink-500 rounded-full h-6 transition-all duration-300"></span>
+                    <span class="w-1 bg-indigo-500 rounded-full h-3 transition-all duration-300"></span>
+                    <span class="w-1 bg-purple-500 rounded-full h-5 transition-all duration-300"></span>
+                </div>
+                <h1 id="currentTitle" class="text-2xl sm:text-3xl font-bold text-white tracking-tight truncate px-4">Select a Song</h1>
+                <p id="currentArtist" class="text-sm font-medium text-gray-400 truncate">YouTube Audio Stream</p>
+            </div>
+
+            <!-- Interactive Player Controls (Glass Panel) -->
+            <div class="glass-panel w-full max-w-xl rounded-3xl p-6 shadow-2xl space-y-6">
+                
+                <!-- Progress Bar & Timestamps -->
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs font-medium text-gray-400">
+                        <span id="currentTime">0:00</span>
+                        <span id="totalDuration">3:45</span>
+                    </div>
+                    <div class="relative group cursor-pointer py-1" id="progressBarContainer">
+                        <div class="w-full h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div id="progressBar" class="h-full bg-gradient-to-r from-indigo-500 to-pink-500 w-0 transition-all duration-100 relative"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Control Buttons & Volume -->
+                <div class="flex items-center justify-between">
+                    
+                    <!-- Secondary Controls (Shuffle / Repeat) -->
+                    <div class="flex items-center space-x-3">
+                        <button id="shuffleBtn" class="text-gray-400 hover:text-white transition p-2 rounded-full hover:bg-white/5" title="Shuffle">
+                            <i class="fa-solid fa-shuffle text-sm"></i>
+                        </button>
+                        <button id="repeatBtn" class="text-gray-400 hover:text-white transition p-2 rounded-full hover:bg-white/5" title="Repeat">
+                            <i class="fa-solid fa-repeat text-sm"></i>
+                        </button>
+                    </div>
+
+                    <!-- Primary Transport Controls -->
+                    <div class="flex items-center space-x-4">
+                        <button id="prevBtn" class="w-11 h-11 rounded-full bg-gray-800/80 hover:bg-gray-700 text-white flex items-center justify-center transition shadow-md border border-white/5 hover:scale-105 active:scale-95">
+                            <i class="fa-solid fa-backward-step"></i>
+                        </button>
+                        <button id="playPauseBtn" class="w-14 h-14 rounded-full bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-600 text-white flex items-center justify-center transition shadow-lg shadow-indigo-500/40 hover:scale-105 active:scale-95 text-lg">
+                            <i id="playPauseIcon" class="fa-solid fa-play ml-0.5"></i>
+                        </button>
+                        <button id="nextBtn" class="w-11 h-11 rounded-full bg-gray-800/80 hover:bg-gray-700 text-white flex items-center justify-center transition shadow-md border border-white/5 hover:scale-105 active:scale-95">
+                            <i class="fa-solid fa-forward-step"></i>
+                        </button>
+                    </div>
+
+                    <!-- Volume Control -->
+                    <div class="flex items-center space-x-2">
+                        <button id="muteBtn" class="text-gray-400 hover:text-white transition p-2">
+                            <i id="volumeIcon" class="fa-solid fa-volume-high text-sm"></i>
+                        </button>
+                        <input id="volumeSlider" type="range" min="0" max="100" value="80" class="w-20 sm:w-24 accent-indigo-500 h-1.5 bg-gray-800 rounded-lg cursor-pointer">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Right Column: Playlist Queue (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col space-y-4">
+            <div class="flex items-center justify-between px-2">
+                <h2 class="text-xl font-bold text-white flex items-center space-x-2">
+                    <i class="fa-solid fa-list-music text-indigo-400"></i>
+                    <span>Playlist Queue</span>
+                </h2>
+                <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">3 Tracks</span>
+            </div>
+
+            <!-- Queue Container -->
+            <div class="glass-panel rounded-3xl p-4 space-y-3 shadow-2xl max-h-[500px] overflow-y-auto" id="playlistContainer">
+                <!-- Playlist Item 1 -->
+                <div class="playlist-item group flex items-center justify-between p-3 rounded-2xl glass-card hover:bg-white/10 transition cursor-pointer border border-white/5" data-index="0">
+                    <div class="flex items-center space-x-4 overflow-hidden">
+                        <div class="relative w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-gray-800">
+                            <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=200&auto=format&fit=crop&q=80" alt="Thumbnail" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                                <i class="fa-solid fa-play text-white text-xs"></i>
+                            </div>
+                        </div>
+                        <div class="overflow-hidden">
+                            <h3 class="font-semibold text-sm text-white truncate group-hover:text-indigo-400 transition">Lofi Hip Hop Radio - Beats to Relax/Study to</h3>
+                            <p class="text-xs text-gray-400 truncate mt-0.5">Lofi Girl • Live Stream</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3 flex-shrink-0 pl-2">
+                        <span class="text-xs text-gray-500 font-medium">LIVE</span>
+                        <button class="text-gray-500 hover:text-white p-1">
+                            <i class="fa-solid fa-ellipsis-vertical text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Playlist Item 2 -->
+                <div class="playlist-item group flex items-center justify-between p-3 rounded-2xl glass-card hover:bg-white/10 transition cursor-pointer border border-white/5" data-index="1">
+                    <div class="flex items-center space-x-4 overflow-hidden">
+                        <div class="relative w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-gray-800">
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=200&auto=format&fit=crop&q=80" alt="Thumbnail" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                                <i class="fa-solid fa-play text-white text-xs"></i>
+                            </div>
+                        </div>
+                        <div class="overflow-hidden">
+                            <h3 class="font-semibold text-sm text-white truncate group-hover:text-indigo-400 transition">Electro Light - Symbolism [NCS Release]</h3>
+                            <p class="text-xs text-gray-400 truncate mt-0.5">NoCopyrightSounds • 3:32</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3 flex-shrink-0 pl-2">
+                        <span class="text-xs text-gray-400 font-medium">3:32</span>
+                        <button class="text-gray-500 hover:text-white p-1">
+                            <i class="fa-solid fa-ellipsis-vertical text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Playlist Item 3 -->
+                <div class="playlist-item group flex items-center justify-between p-3 rounded-2xl glass-card hover:bg-white/10 transition cursor-pointer border border-white/5" data-index="2">
+                    <div class="flex items-center space-x-4 overflow-hidden">
+                        <div class="relative w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-gray-800">
+                            <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&auto=format&fit=crop&q=80" alt="Thumbnail" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                                <i class="fa-solid fa-play text-white text-xs"></i>
+                            </div>
+                        </div>
+                        <div class="overflow-hidden">
+                            <h3 class="font-semibold text-sm text-white truncate group-hover:text-indigo-400 transition">Alan Walker - Fade [NCS Release]</h3>
+                            <p class="text-xs text-gray-400 truncate mt-0.5">NoCopyrightSounds • 4:21</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3 flex-shrink-0 pl-2">
+                        <span class="text-xs text-gray-400 font-medium">4:21</span>
+                        <button class="text-gray-500 hover:text-white p-1">
+                            <i class="fa-solid fa-ellipsis-vertical text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden YouTube Iframe Player Container -->
+            <div id="youtubePlayerContainer" class="hidden"></div>
+
+        </div>
+
+    </main>
+
+    <!-- YouTube IFrame API & Player Controller Script -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        // Playlist data with valid royalty-free / classic YouTube tracks
+        const playlist = [
+            {
+                title: "Lofi Hip Hop Radio - Beats to Relax/Study to",
+                artist: "Lofi Girl",
+                duration: "LIVE",
+                durationSec: 10800,
+                videoId: "jfKfPfyJRdk",
+                cover: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=400&auto=format&fit=crop&q=80"
+            },
+            {
+                title: "Electro Light - Symbolism [NCS Release]",
+                artist: "NoCopyrightSounds",
+                duration: "3:32",
+                durationSec: 212,
+                videoId: "__LEovzWVUQ",
+                cover: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&auto=format&fit=crop&q=80"
+            },
+            {
+                title: "Alan Walker - Fade [NCS Release]",
+                artist: "NoCopyrightSounds",
+                duration: "4:21",
+                durationSec: 261,
+                videoId: "bM7SZ5SBzyY",
+                cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&auto=format&fit=crop&q=80"
+            }
+        ];
+
+        let currentIndex = 0;
+        let player = null;
+        let isPlaying = false;
+        let progressInterval = null;
+        let isMuted = false;
+        let previousVolume = 80;
+        let isShuffle = false;
+        let isRepeat = false;
+
+        // DOM Elements
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const playPauseIcon = document.getElementById('playPauseIcon');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const currentTitle = document.getElementById('currentTitle');
+        const currentArtist = document.getElementById('currentArtist');
+        const currentAlbumArt = document.getElementById('currentAlbumArt');
+        const currentTimeEl = document.getElementById('currentTime');
+        const totalDurationEl = document.getElementById('totalDuration');
+        const progressBar = document.getElementById('progressBar');
+        const progressBarContainer = document.getElementById('progressBarContainer');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const muteBtn = document.getElementById('muteBtn');
+        const volumeIcon = document.getElementById('volumeIcon');
+        const vinylRecord = document.getElementById('vinylRecord');
+        const shuffleBtn = document.getElementById('shuffleBtn');
+        const repeatBtn = document.getElementById('repeatBtn');
+        const playlistItems = document.querySelectorAll('.playlist-item');
+        const equalizerBars = document.querySelectorAll('#equalizerBars span');
+
+        // YouTube API Initialization
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtubePlayerContainer', {
+                height: '0',
+                width: '0',
+                videoId: playlist[currentIndex].videoId,
+                playerVars: {
+                    'playsinline': 1,
+                    'controls': 0
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            updateSongInfo(currentIndex);
+            player.setVolume(80);
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING) {
+                isPlaying = true;
+                playPauseIcon.className = "fa-solid fa-pause";
+                vinylRecord.classList.add('animate-spin-slow');
+                startProgressTracker();
+                startEqualizerAnimation();
+            } else if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
+                isPlaying = false;
+                playPauseIcon.className = "fa-solid fa-play ml-0.5";
+                vinylRecord.classList.remove('animate-spin-slow');
+                stopProgressTracker();
+                stopEqualizerAnimation();
+                if (event.data == YT.PlayerState.ENDED) {
+                    handleTrackEnded();
+                }
+            }
+        }
+
+        // Load and play selected track
+        function loadTrack(index) {
+            currentIndex = index;
+            const track = playlist[currentIndex];
+            if (player && typeof player.loadVideoById === 'function') {
+                player.loadVideoById(track.videoId);
+            }
+            updateSongInfo(currentIndex);
+            highlightActivePlaylist();
+        }
+
+        function updateSongInfo(index) {
+            const track = playlist[index];
+            currentTitle.textContent = track.title;
+            currentArtist.textContent = track.artist;
+            currentAlbumArt.src = track.cover;
+            totalDurationEl.textContent = track.duration;
+            progressBar.style.width = '0%';
+        }
+
+        function highlightActivePlaylist() {
+            playlistItems.forEach((item, idx) => {
+                if (idx === currentIndex) {
+                    item.classList.add('bg-indigo-600/20', 'border-indigo-500/40');
+                    item.classList.remove('glass-card');
+                } else {
+                    item.classList.remove('bg-indigo-600/20', 'border-indigo-500/40');
+                    item.classList.add('glass-card');
+                }
+            });
+        }
+
+        // Play/Pause toggle
+        playPauseBtn.addEventListener('click', () => {
+            if (!player) return;
+            const state = player.getPlayerState();
+            if (state == YT.PlayerState.PLAYING) {
+                player.pauseVideo();
+            } else {
+                player.playVideo();
+            }
+        });
+
+        // Next & Previous Handlers
+        nextBtn.addEventListener('click', () => {
+            if (isShuffle) {
+                currentIndex = Math.floor(Math.random() * playlist.length);
+            } else {
+                currentIndex = (currentIndex + 1) % playlist.length;
+            }
+            loadTrack(currentIndex);
+            player.playVideo();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+            loadTrack(currentIndex);
+            player.playVideo();
+        });
+
+        function handleTrackEnded() {
+            if (isRepeat) {
+                player.seekTo(0);
+                player.playVideo();
+            } else {
+                nextBtn.click();
+            }
+        }
+
+        // Playlist item click bindings
+        playlistItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                loadTrack(index);
+                player.playVideo();
+            });
+        });
+
+        // Progress tracker loop
+        function startProgressTracker() {
+            stopProgressTracker();
+            progressInterval = setInterval(() => {
+                if (player && typeof player.getCurrentTime === 'function' && typeof player.getDuration === 'function') {
+                    const current = player.getCurrentTime();
+                    const duration = player.getDuration() || playlist[currentIndex].durationSec;
+                    
+                    currentTimeEl.textContent = formatTime(current);
+                    if (duration > 0) {
+                        const percent = (current / duration) * 100;
+                        progressBar.style.width = `${percent}%`;
+                    }
+                }
+            }, 500);
+        }
+
+        function stopProgressTracker() {
+            if (progressInterval) clearInterval(progressInterval);
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // Seek functionality on progress bar click
+        progressBarContainer.addEventListener('click', (e) => {
+            const rect = progressBarContainer.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            const percentage = clickX / width;
+            const duration = player.getDuration() || playlist[currentIndex].durationSec;
+            const seekToTime = duration * percentage;
+            player.seekTo(seekToTime, true);
+            progressBar.style.width = `${percentage * 100}%`;
+        });
+
+        // Volume control
+        volumeSlider.addEventListener('input', (e) => {
+            const val = e.target.value;
+            if (player && typeof player.setVolume === 'function') {
+                player.setVolume(val);
+            }
+            isMuted = (val == 0);
+            updateVolumeIcon(val);
+        });
+
+        muteBtn.addEventListener('click', () => {
+            if (!player) return;
+            if (isMuted) {
+                player.unMute();
+                player.setVolume(previousVolume);
+                volumeSlider.value = previousVolume;
+                isMuted = false;
+                updateVolumeIcon(previousVolume);
+            } else {
+                previousVolume = volumeSlider.value;
+                player.mute();
+                volumeSlider.value = 0;
+                isMuted = true;
+                updateVolumeIcon(0);
+            }
+        });
+
+        function updateVolumeIcon(vol) {
+            if (vol == 0) {
+                volumeIcon.className = "fa-solid fa-volume-xmark text-sm text-red-400";
+            } else if (vol < 50) {
+                volumeIcon.className = "fa-solid fa-volume-low text-sm";
+            } else {
+                volumeIcon.className = "fa-solid fa-volume-high text-sm";
+            }
+        }
+
+        // Shuffle & Repeat Toggles
+        shuffleBtn.addEventListener('click', () => {
+            isShuffle = !isShuffle;
+            shuffleBtn.classList.toggle('text-indigo-400', isShuffle);
+            shuffleBtn.classList.toggle('bg-white/5', isShuffle);
+        });
+
+        repeatBtn.addEventListener('click', () => {
+            isRepeat = !isRepeat;
+            repeatBtn.classList.toggle('text-indigo-400', isRepeat);
+            repeatBtn.classList.toggle('bg-white/5', isRepeat);
+        });
+
+        // Equalizer animation
+        let eqInterval = null;
+        function startEqualizerAnimation() {
+            if (eqInterval) return;
+            eqInterval = setInterval(() => {
+                equalizerBars.forEach(bar => {
+                    const randomHeight = Math.floor(Math.random() * 24) + 4;
+                    bar.style.height = `${randomHeight}px`;
+                });
+            }, 150);
+        }
+
+        function stopEqualizerAnimation() {
+            if (eqInterval) {
+                clearInterval(eqInterval);
+                eqInterval = null;
+            }
+            equalizerBars.forEach(bar => {
+                bar.style.height = '8px';
+            });
+        }
+
+        // Initial setup highlight
+        highlightActivePlaylist();
+    </script>
+</body>
+</html>
