@@ -43,7 +43,7 @@
             flex-direction: column;
         }
 
-        /* Top Bar */
+        /* Top Banner */
         .top-banner {
             background-color: var(--nav-bg);
             color: white;
@@ -68,7 +68,7 @@
             color: var(--text-main);
         }
 
-        /* Controls / Search */
+        /* Search Bar */
         .controls-bar {
             display: flex;
             justify-content: space-between;
@@ -180,7 +180,7 @@
             background-color: var(--primary-hover);
         }
 
-        /* Reading Modal / View */
+        /* Reader Overlay / PDF Viewer */
         .reader-overlay {
             position: fixed;
             top: 0;
@@ -191,7 +191,6 @@
             z-index: 1000;
             display: none;
             flex-direction: column;
-            overflow-y: auto;
         }
 
         .reader-overlay.active {
@@ -199,8 +198,6 @@
         }
 
         .reader-header {
-            position: sticky;
-            top: 0;
             background: var(--card-bg);
             border-bottom: 1px solid #ddd;
             padding: 15px 25px;
@@ -219,42 +216,37 @@
         .icon-btn {
             background: none;
             border: none;
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: var(--text-main);
             cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .icon-btn:hover {
-            background-color: rgba(0,0,0,0.05);
+            background-color: rgba(0,0,0,0.08);
         }
 
         .reader-body {
-            max-width: 750px;
-            margin: 40px auto;
-            padding: 0 25px 60px 25px;
-            color: var(--reader-text);
-            line-height: 1.8;
-            font-size: 1.15rem;
+            flex: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            overflow: hidden;
         }
 
-        .reader-title {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .reader-author {
-            text-align: center;
-            color: var(--text-muted);
-            margin-bottom: 40px;
-            font-style: italic;
-        }
-
-        .reader-content p {
-            margin-bottom: 20px;
-            text-indent: 20px;
+        .pdf-frame {
+            width: 100%;
+            max-width: 1000px;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         /* Bottom Nav */
@@ -303,35 +295,34 @@
         <!-- Search Bar -->
         <div class="controls-bar">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search books by title or description..." onkeyup="filterBooks()">
+                <input type="text" id="searchInput" placeholder="Search books by title..." onkeyup="filterBooks()">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
         </div>
 
         <!-- Book List -->
         <div class="book-list" id="bookList">
-            <!-- Books will be dynamically injected here -->
+            <!-- Books injected dynamically -->
         </div>
     </div>
 
-    <!-- Reader Modal View -->
+    <!-- PDF Reader Modal -->
     <div class="reader-overlay" id="readerOverlay">
         <div class="reader-header">
-            <button class="icon-btn" onclick="closeReader()" title="Close Reader">
-                <i class="fa-solid fa-arrow-left"></i> Back
+            <button class="icon-btn" onclick="closeReader()">
+                <i class="fa-solid fa-arrow-left"></i> Back to Gallery
             </button>
             <div class="reader-header-actions">
-                <button class="icon-btn" onclick="adjustFontSize(1)" title="Increase Font"><i class="fa-solid fa-plus"></i></button>
-                <button class="icon-btn" onclick="adjustFontSize(-1)" title="Decrease Font"><i class="fa-solid fa-minus"></i></button>
-                <button class="icon-btn" onclick="toggleDarkMode()" title="Toggle Dark/Light Mode"><i class="fa-solid fa-moon"></i></button>
+                <a id="downloadBtn" href="#" download class="icon-btn" style="text-decoration: none;">
+                    <i class="fa-solid fa-download"></i> Download PDF
+                </a>
+                <button class="icon-btn" onclick="toggleDarkMode()">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
             </div>
         </div>
-        <div class="reader-body">
-            <h1 class="reader-title" id="activeBookTitle">Book Title</h1>
-            <div class="reader-author" id="activeBookAuthor">Author Name</div>
-            <div class="reader-content" id="activeBookContent">
-                <!-- Book content injected here -->
-            </div>
+        <div class="reader-body" id="readerBody">
+            <!-- PDF Viewer dynamic iframe -->
         </div>
     </div>
 
@@ -343,46 +334,39 @@
     </div>
 
     <script>
-        // Book Database
+        // Array of books with PDF URLs
         const books = [
             {
                 id: 1,
-                title: "Angangi Wari Macha",
-                author: "Manipuri Folk Tale Collection",
-                description: "A collection of delightful short stories and folk tales meant for children and young readers.",
-                content: `
-                    <p>Khamba and Thoibi were two prominent figures in the folklore of Moirang, an ancient kingdom in Manipuri tradition. Their legend has been passed down through generations in the form of song, dance, and epic storytelling.</p>
-                    <p>Once upon a time, in a peaceful village surrounded by lush green hills, children gathered under the big banyan tree to listen to the wise elders. The stories told of brave warriors, magical animals, and the timeless lessons of honesty, courage, and love for nature.</p>
-                    <p>Every tale held a special meaning, teaching young minds to respect their traditions and cherish the beauty of their homeland.</p>
-                `
+                title: "Meetei Laining Ahanba",
+                author: "Traditional Literature",
+                description: "Meetei Laininglon Ahoupa (Ahanba) - An insightful book exploring sacred teachings and history.",
+                pdfUrl: "assets/laining%20ahanba%20final.pdf" // Direct link to your uploaded file in the assets folder
             },
             {
                 id: 2,
-                title: "Wakhal Khudum Chanba",
-                author: "Philosophical Essays",
-                description: "An insightful book exploring philosophical thoughts, life lessons, and deep reflection.",
-                content: `
-                    <p>Life is a journey of continuous reflection. Human thoughts are like waves in a river—constantly moving, shaping the banks of our character and decisions.</p>
-                    <p>To understand the self, one must practice mindfulness and quiet contemplation. In this section, we examine the inner peace that comes from embracing simple living, high thinking, and empathy toward all living beings.</p>
-                    <p>True wisdom lies not in knowing everything, but in understanding how little we know and constantly striving to grow in wisdom and compassion.</p>
-                `
+                title: "Angangi Wari Macha",
+                author: "Folk Tale Collection",
+                description: "A collection of delightful short stories and folk tales meant for children and young readers.",
+                pdfUrl: "assets/angangi_wari_macha.pdf" // Replace with your uploaded PDF filename when available
             },
             {
                 id: 3,
+                title: "Wakhal Khudum Chanba",
+                author: "Philosophical Essays",
+                description: "An insightful book exploring philosophical thoughts, life lessons, and deep reflection.",
+                pdfUrl: "assets/wakhal_khudum_chanba.pdf" // Replace with your uploaded PDF filename when available
+            },
+            {
+                id: 4,
                 title: "Nungaiba Thiba",
                 author: "Literary Collection",
                 description: "A creative literary piece focused on the search for peace, joy, and spiritual fulfillment.",
-                content: `
-                    <p>The pursuit of happiness is a universal quest. Many seek it in wealth or fame, yet true fulfillment often resides in the quiet moments of connection and gratitude.</p>
-                    <p>In this narrative, the protagonist embarks on a journey through the serene landscapes of Manipur—from the tranquil waters of Loktak Lake to the hills of Ukhrul—discovering that peace is found within oneself.</p>
-                    <p>Through every trial and triumph, the warmth of community and faith shines light upon the path toward harmony.</p>
-                `
+                pdfUrl: "assets/nungaiba_thiba.pdf" // Replace with your uploaded PDF filename when available
             }
         ];
 
-        let currentFontSize = 1.15;
-
-        // Render books to the page
+        // Render books to screen
         function renderBooks(bookArray) {
             const container = document.getElementById('bookList');
             container.innerHTML = '';
@@ -392,21 +376,21 @@
                 card.className = 'book-card';
                 card.innerHTML = `
                     <div class="book-icon">
-                        <i class="fa-solid fa-book-open"></i>
+                        <i class="fa-solid fa-file-pdf"></i>
                     </div>
                     <div class="book-info">
                         <div class="book-title" onclick="openReader(${book.id})">${book.title}</div>
                         <div class="book-desc">${book.description}</div>
                     </div>
                     <button class="btn-read" onclick="openReader(${book.id})">
-                        <i class="fa-solid fa-book-reader"></i> Read Details
+                        <i class="fa-solid fa-book-open"></i> Read Book
                     </button>
                 `;
                 container.appendChild(card);
             });
         }
 
-        // Search/Filter function
+        // Search Filter
         function filterBooks() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const filtered = books.filter(b => 
@@ -416,39 +400,41 @@
             renderBooks(filtered);
         }
 
-        // Open Reader Modal
+        // Open PDF Reader
         function openReader(bookId) {
             const book = books.find(b => b.id === bookId);
             if (!book) return;
 
-            document.getElementById('activeBookTitle').innerText = book.title;
-            document.getElementById('activeBookAuthor').innerText = book.author;
-            document.getElementById('activeBookContent').innerHTML = book.content;
+            const readerBody = document.getElementById('readerBody');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            // Set download link
+            downloadBtn.href = book.pdfUrl;
+
+            // Embed PDF viewer via iframe
+            readerBody.innerHTML = `
+                <iframe class="pdf-frame" src="${book.pdfUrl}">
+                    <p>Your browser does not support inline PDFs. <a href="${book.pdfUrl}">Click here to view/download the PDF.</a></p>
+                </iframe>
+            `;
 
             document.getElementById('readerOverlay').classList.add('active');
-            document.body.style.overflow = 'hidden'; // Stop background scrolling
+            document.body.style.overflow = 'hidden';
         }
 
-        // Close Reader Modal
+        // Close PDF Reader
         function closeReader() {
             document.getElementById('readerOverlay').classList.remove('active');
             document.body.style.overflow = 'auto';
+            document.getElementById('readerBody').innerHTML = ''; // Clear iframe on close
         }
 
-        // Font Size Toggle
-        function adjustFontSize(delta) {
-            currentFontSize += delta * 0.1;
-            if (currentFontSize < 0.8) currentFontSize = 0.8;
-            if (currentFontSize > 2.0) currentFontSize = 2.0;
-            document.getElementById('activeBookContent').style.fontSize = currentFontSize + 'rem';
-        }
-
-        // Dark Mode Toggle
+        // Toggle Dark Theme
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
         }
 
-        // Initial render
+        // Initialize page
         renderBooks(books);
     </script>
 </body>
