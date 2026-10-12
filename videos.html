@@ -3,106 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Details - Kanglei Art Gallery</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>Kanglei Art Gallery - Video Gallery</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            /* Background color matching the green swatch in your image */
+            background-color: #00A86B;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1a1a1a;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Header Styling */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        header p {
+            font-size: 1.05rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Video List Layout */
+        .video-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* Single Video Item Container */
+        .video-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Thumbnail Image */
+        .thumbnail {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 4px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Metadata Details */
+        .video-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 1.25rem;
+            color: #000000;
+            padding-top: 5px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: baseline;
+        }
+
+        .label {
+            font-weight: 700;
+            width: 100px;
+            flex-shrink: 0;
+        }
+
+        .colon {
+            margin-right: 15px;
+            font-weight: 700;
+        }
+
+        .value {
+            font-weight: 700;
+        }
+
+        /* Responsive styling for smaller screens */
+        @media (max-width: 600px) {
+            .video-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .thumbnail {
+                width: 100%;
+                height: 200px;
+            }
+
+            .info-row {
+                font-size: 1.1rem;
+            }
+
+            .label {
+                width: 80px;
+            }
         }
     </style>
 </head>
-<body class="bg-white min-h-screen p-6 sm:p-10">
+<body>
 
-    <main class="max-w-2xl mx-auto mt-2 sm:mt-6">
-        <!-- Header Section -->
-        <header class="mb-10 text-center sm:text-left border-b border-gray-200 pb-6">
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-wide uppercase">
-                KANGLEI ART GALLERY -VIDEO GALLARY
-            </h1>
-            <p class="mt-2 text-sm sm:text-base text-gray-600 max-w-xl">
-                Explore our collection of traditional and modern Manipuri musical and video artistic works.
-            </p>
+    <div class="container">
+        <!-- Header & Short Description -->
+        <header>
+            <h1>KANGLEI ART GALLERY - VIDEO GALLERY</h1>
+            <p>Welcome to our official collection of musical videos, cultural visual arts, and featured performances.</p>
         </header>
 
-        <!-- Video List Container -->
-        <div class="space-y-8">
+        <!-- Video Gallery List -->
+        <div class="video-list">
 
-            <!-- Video Item 1 -->
-            <div class="flex items-start sm:items-center space-x-6 pb-6 border-b border-gray-100">
-                <!-- Thumbnail -->
-                <div class="flex-shrink-0">
-                    <img src="https://placehold.co/150x150/ffb6c1/ffffff?text=Flowers" 
-                         onerror="this.src='https://placehold.co/150x150/e2e8f0/475569?text=Image'" 
-                         alt="Matam amagi chanabi" 
-                         class="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded shadow-sm">
-                </div>
-
-                <!-- Text Details -->
-                <div class="flex flex-col justify-center space-y-2">
-                    <div class="text-lg sm:text-xl font-bold text-black">
-                        <span class="inline-block w-20">Title</span> : Matam amagi chanabi
+            <!-- Video Entry 1 (Your original video) -->
+            <div class="video-card">
+                <img src="gggggg.jpg" alt="Matam amagi chanabi thumbnail" class="thumbnail">
+                <div class="video-info">
+                    <div class="info-row">
+                        <span class="label">Title</span>
+                        <span class="colon">:</span>
+                        <span class="value">Matam amagi chanabi</span>
                     </div>
-                    <div class="text-lg sm:text-xl font-bold text-black">
-                        <span class="inline-block w-20">Singer</span>: T. Robindro
+                    <div class="info-row">
+                        <span class="label">Singer</span>
+                        <span class="colon">:</span>
+                        <span class="value">T. Robindro</span>
                     </div>
-                    <div class="text-lg sm:text-xl font-bold text-black">
-                        <span class="inline-block w-20">lyrics</span> : T. Manao
+                    <div class="info-row">
+                        <span class="label">lyrics</span>
+                        <span class="colon">:</span>
+                        <span class="value">T. Manao</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Video Item 2 -->
-            <div class="flex items-start sm:items-center space-x-6 pb-6 border-b border-gray-100">
-                <!-- Thumbnail -->
-                <div class="flex-shrink-0">
-                    <img src="https://placehold.co/150x150/a7f3d0/065f46?text=Music" 
-                         onerror="this.src='https://placehold.co/150x150/e2e8f0/475569?text=Image'" 
-                         alt="Nungshi Nungda" 
-                         class="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded shadow-sm">
-                </div>
-
-                <!-- Text Details -->
-                <div class="flex flex-col justify-center space-y-2">
-                    <div class="text-lg sm:text-xl font-bold text-black">
-                        <span class="inline-block w-20">Title</span> : Nungshi Nungda
+            <!-- Video Entry 2 -->
+            <div class="video-card">
+                <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80" alt="Video thumbnail" class="thumbnail">
+                <div class="video-info">
+                    <div class="info-row">
+                        <span class="label">Title</span>
+                        <span class="colon">:</span>
+                        <span class="value">Nangbu Nungshi</span>
                     </div>
-                    <div class="text-lg sm:text-xl font-bold text-black">
-                        <span class="inline-block w-20">Singer</span>: S. Biren
+                    <div class="info-row">
+                        <span class="label">Singer</span>
+                        <span class="colon">:</span>
+                        <span class="value">R.K. Suresh</span>
                     </div>
-                    <div class="text-lg sm:text-xl font-bold text-black">
-                        <span class="inline-block w-20">lyrics</span> : K. Tombi
+                    <div class="info-row">
+                        <span class="label">lyrics</span>
+                        <span class="colon">:</span>
+                        <span class="value">M. Sanatomba</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Video Item 3 -->
-            <div class="flex items-start sm:items-center space-x-6">
-                <!-- Thumbnail -->
-                <div class="flex-shrink-0">
-                    <img src="https://placehold.co/150x150/bfdbfe/1e3a8a?text=Culture" 
-                         onerror="this.src='https://placehold.co/150x150/e2e8f0/475569?text=Image'" 
-                         alt="Ningol Chakouba" 
-                         class="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded shadow-sm">
-                </div>
-
-                <!-- Text Details -->
-                <div class="flex flex-col justify-center space-y-2">
-                    <div class="text-lg sm:text-xl font-bold text-black">
-                        <span class="inline-block w-20">Title</span> : Ningol Chakouba
+            <!-- Video Entry 3 -->
+            <div class="video-card">
+                <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=400&q=80" alt="Video thumbnail" class="thumbnail">
+                <div class="video-info">
+                    <div class="info-row">
+                        <span class="label">Title</span>
+                        <span class="colon">:</span>
+                        <span class="value">Thawai Oiriba</span>
                     </div>
-                    <div class="text-lg sm:text-xl font-bold text-black">
-                        <span class="inline-block w-20">Singer</span>: M. Ranbir
+                    <div class="info-row">
+                        <span class="label">Singer</span>
+                        <span class="colon">:</span>
+                        <span class="value">L. Bidyalaxmi</span>
                     </div>
-                    <div class="text-lg sm:text-xl font-bold text-black">
-                        <span class="inline-block w-20">lyrics</span> : L. Sanatombi
+                    <div class="info-row">
+                        <span class="label">lyrics</span>
+                        <span class="colon">:</span>
+                        <span class="value">K. Hemanta</span>
                     </div>
                 </div>
             </div>
 
         </div>
-    </main>
+    </div>
 
 </body>
 </html>
