@@ -1,67 +1,423 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kanglei Gallery</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- FontAwesome for Category Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanglei Art Gallery</title>
+    <!-- FontAwesome for Category Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            /* Emerald green background matching the rest of the site */
+            background-color: #00A86B;
+            min-height: 100vh;
+            padding: 20px 20px 0 20px;
+            color: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Top Right Compact Buttons Area */
+        .top-right-actions {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .small-submit-btn {
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #00A86B;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transition: all 0.2s ease;
+        }
+
+        .small-submit-btn:hover {
+            background-color: #ffffff;
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .small-submit-btn.telegram-btn {
+            color: #0088cc;
+        }
+
+        .small-submit-btn.gmail-btn {
+            color: #ea4335;
+        }
+
+        /* Container Layout */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            flex: 1;
+            width: 100%;
+            padding-top: 40px;
+        }
+
+        /* Header Styling */
+        header {
+            text-align: center;
+            margin-bottom: 35px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        header p {
+            font-size: 1.05rem;
+            opacity: 0.95;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Gallery Categories Grid */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 22px;
+            padding-bottom: 40px;
+        }
+
+        .category-card {
+            background-color: rgba(255, 255, 255, 0.96);
+            border-radius: 14px;
+            padding: 28px 22px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .category-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+            background-color: #ffffff;
+        }
+
+        .category-icon {
+            font-size: 2.8rem;
+            color: #00A86B;
+            margin-bottom: 16px;
+            transition: transform 0.25s ease;
+        }
+
+        .category-card:hover .category-icon {
+            transform: scale(1.1);
+        }
+
+        .category-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .category-card p {
+            font-size: 0.95rem;
+            color: #4b5563;
+            line-height: 1.45;
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            background-color: rgba(255, 255, 255, 0.98);
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-around;
+            padding: 16px;
+            position: sticky;
+            bottom: 0;
+            margin: 0 -20px;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 50;
+        }
+
+        .nav-btn {
+            text-decoration: none;
+            color: #00A86B;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+
+        .nav-btn:hover {
+            color: #007a4d;
+        }
+
+        /* Modal Popup Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 16px;
+            max-width: 450px;
+            width: 100%;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            transform: scale(0.85);
+            transition: transform 0.3s ease;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 18px;
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            color: #6b7280;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: #111827;
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .modal-card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #111827;
+        }
+
+        .modal-card p {
+            font-size: 0.98rem;
+            color: #4b5563;
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
+
+        .modal-action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 10px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: opacity 0.2s;
+        }
+
+        .modal-action-btn:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 15px 12px 0 12px;
+            }
+
+            .top-right-actions {
+                top: 12px;
+                right: 12px;
+            }
+
+            .small-submit-btn {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+
+            header {
+                margin-top: 35px;
+            }
+
+            header h1 {
+                font-size: 1.6rem;
+            }
+
+            .gallery-container {
+                grid-template-columns: 1fr;
+            }
+
+            .bottom-nav {
+                margin: 0 -12px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Top Header -->
-  <header class="header">
-    <h1>🎨 KANGLEI ART GALLERY</h1>
-    <p>A home for traditional and contemporary art, music, & literature <br> every body can publish/ share own items through this platform 
-    </p>
-  </header>
-
-  <!-- Gallery Categories Grid -->
-  <main class="gallery-container">
-    <div class="category-card" onclick="location.href='songs.html'">
-      <i class="fa-solid fa-music category-icon"></i>
-      <h3>Song Gallery</h3>
-      <p>Explore original compositions, folk tracks, and audio art.</p>
+    <!-- Top Right Compact Action Buttons -->
+    <div class="top-right-actions">
+        <button class="small-submit-btn telegram-btn" onclick="openModal('telegramModal')">
+            <i class="fa-brands fa-telegram"></i> Telegram
+        </button>
+        <button class="small-submit-btn gmail-btn" onclick="openModal('gmailModal')">
+            <i class="fa-solid fa-envelope"></i> Email Us
+        </button>
     </div>
 
-    <div class="category-card" onclick="location.href='videos.html'">
-      <i class="fa-solid fa-clapperboard category-icon"></i>
-      <h3>Video Gallery</h3>
-      <p>Watch short films, visual performances, and artistic video logs.</p>
+    <div class="container">
+        <!-- Top Header -->
+        <header class="header">
+            <h1>🎨 KANGLEI ART GALLERY</h1>
+            <p>A home for traditional and contemporary art, music, & literature.<br>
+               Everyone can publish and share their own items through this platform.
+            </p>
+        </header>
+
+        <!-- Gallery Categories Grid -->
+        <main class="gallery-container">
+            <div class="category-card" onclick="location.href='songs.html'">
+                <i class="fa-solid fa-music category-icon"></i>
+                <h3>Song Gallery</h3>
+                <p>Explore original compositions, folk tracks, and audio art.</p>
+            </div>
+
+            <div class="category-card" onclick="location.href='videos.html'">
+                <i class="fa-solid fa-clapperboard category-icon"></i>
+                <h3>Video Gallery</h3>
+                <p>Watch short films, visual performances, and artistic video logs.</p>
+            </div>
+
+            <div class="category-card" onclick="location.href='stories.html'">
+                <i class="fa-solid fa-book-open-reader category-icon"></i>
+                <h3>Short Stories Gallery</h3>
+                <p>Read inspiring narrative prose and short creative stories.</p>
+            </div>
+
+            <div class="category-card" onclick="location.href='poems.html'">
+                <i class="fa-solid fa-feather-pointed category-icon"></i>
+                <h3>Poems Gallery</h3>
+                <p>Discover emotional verse, modern poetry, and classical literature.</p>
+            </div>
+
+            <div class="category-card" onclick="location.href='books.html'">
+                <i class="fa-solid fa-book category-icon"></i>
+                <h3>Books Gallery</h3>
+                <p>Browse published books, digital manuscripts, and full works.</p>
+            </div>
+
+            <div class="category-card" onclick="location.href='comments.html'">
+                <i class="fa-solid fa-comments category-icon"></i>
+                <h3>Public Comments</h3>
+                <p>Join the conversation and post community feedback.</p>
+            </div>
+        </main>
     </div>
 
-    <div class="category-card" onclick="location.href='stories.html'">
-      <i class="fa-solid fa-book-open-reader category-icon"></i>
-      <h3>Short Stories Gallery</h3>
-      <p>Read inspiring narrative prose and short creative stories.</p>
+    <!-- Bottom Navigation Bar -->
+    <footer class="bottom-nav">
+        <a href="register.html" class="nav-btn"><i class="fa-solid fa-user-plus"></i> Register</a>
+        <a href="login.html" class="nav-btn"><i class="fa-solid fa-right-to-bracket"></i> Log In</a>
+        <a href="about.html" class="nav-btn"><i class="fa-solid fa-circle-info"></i> About</a>
+    </footer>
+
+    <!-- Telegram Modal -->
+    <div class="modal-overlay" id="telegramModal" onclick="closeModalOnOverlay(event, 'telegramModal')">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('telegramModal')"><i class="fa-solid fa-xmark"></i></button>
+            <i class="fa-brands fa-telegram modal-icon" style="color: #0088cc;"></i>
+            <h2>Telegram Submission</h2>
+            <p>Send your artistic media, audio, or manuscripts directly to our official Telegram channel or submission bot.</p>
+            <a href="https://t.me/" target="_blank" class="modal-action-btn" style="background-color: #0088cc;">
+                <i class="fa-brands fa-telegram"></i> Join Telegram Channel
+            </a>
+        </div>
     </div>
 
-    <div class="category-card" onclick="location.href='poems.html'">
-      <i class="fa-solid fa-feather-pointed category-icon"></i>
-      <h3>Poems Gallery</h3>
-      <p>Discover emotional verse, modern poetry, and classical literature.</p>
+    <!-- Gmail Modal -->
+    <div class="modal-overlay" id="gmailModal" onclick="closeModalOnOverlay(event, 'gmailModal')">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('gmailModal')"><i class="fa-solid fa-xmark"></i></button>
+            <i class="fa-solid fa-envelope-open-text modal-icon" style="color: #ea4335;"></i>
+            <h2>Gmail Submission</h2>
+            <p>Email your artwork or files along with a short title, description, and your artist bio.</p>
+            <a href="mailto:kangleigallery@gmail.com?subject=Art%20Submission" class="modal-action-btn" style="background-color: #ea4335;">
+                <i class="fa-solid fa-paper-plane"></i> Send Email
+            </a>
+        </div>
     </div>
 
-    <div class="category-card" onclick="location.href='books.html'">
-      <i class="fa-solid fa-book category-icon"></i>
-      <h3>Books Gallery</h3>
-      <p>Browse published books, digital manuscripts, and full works.</p>
-    </div>
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
 
-    <div class="category-card" onclick="location.href='comments.html'">
-      <i class="fa-solid fa-comments category-icon"></i>
-      <h3>Public Comments</h3>
-      <p>Join the conversation and post community feedback.</p>
-    </div>
-  </main>
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
 
-  <!-- Bottom Navigation Link Bar -->
-  <footer class="bottom-nav">
-    <a href="register.html" class="nav-btn"><i class="fa-solid fa-user-plus"></i> Register</a>
-    <a href="login.html" class="nav-btn"><i class="fa-solid fa-right-to-bracket"></i> Log In</a>
-    <a href="about.html" class="nav-btn"><i class="fa-solid fa-circle-info"></i> About</a>
-  </footer>
-
+        function closeModalOnOverlay(event, modalId) {
+            if (event.target === document.getElementById(modalId)) {
+                closeModal(modalId);
+            }
+        }
+    </script>
 </body>
 </html>
