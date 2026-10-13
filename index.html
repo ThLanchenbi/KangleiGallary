@@ -18,7 +18,7 @@
         }
 
         body {
-            /* Emerald green background matching the rest of the site */
+            /* Emerald green background matching the site theme */
             background-color: #00A86B;
             min-height: 100vh;
             padding: 20px 20px 0 20px;
@@ -106,7 +106,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 22px;
-            padding-bottom: 40px;
+            padding-bottom: 30px;
         }
 
         .category-card {
@@ -151,6 +151,155 @@
             font-size: 0.95rem;
             color: #4b5563;
             line-height: 1.45;
+        }
+
+        /* Bounded Highlights Section (6 Lines) */
+        .highlights-container {
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 35px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .highlights-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .highlights-header i {
+            color: #00A86B;
+            font-size: 1.2rem;
+        }
+
+        .ticker-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ticker-row {
+            display: flex;
+            align-items: center;
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 8px 14px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        /* Fixed Left Label Section */
+        .group-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 170px;
+            min-width: 170px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: #0f172a;
+            border-right: 2px solid #cbd5e1;
+            padding-right: 12px;
+            z-index: 2;
+            background: #f8fafc;
+        }
+
+        .group-label i {
+            color: #00A86B;
+            width: 16px;
+            text-align: center;
+        }
+
+        /* Pulsing Red Blinking Indicator Dot */
+        .blink-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+            box-shadow: 0 0 6px #ef4444;
+            animation: pulse-blink 1.3s infinite ease-in-out;
+        }
+
+        @keyframes pulse-blink {
+            0% {
+                transform: scale(0.85);
+                opacity: 1;
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            70% {
+                transform: scale(1.1);
+                opacity: 0.4;
+                box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+            }
+            100% {
+                transform: scale(0.85);
+                opacity: 1;
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+
+        /* Scrolling Content Area */
+        .marquee-container {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            white-space: nowrap;
+            margin-left: 12px;
+        }
+
+        .marquee-track {
+            display: inline-block;
+            white-space: nowrap;
+            animation: scroll-left 22s linear infinite;
+        }
+
+        .ticker-row:hover .marquee-track {
+            animation-play-state: paused; /* Pause scrolling on hover */
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0%);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .item-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.86rem;
+            font-weight: 600;
+            color: #334155;
+            margin-right: 30px;
+            background: #ffffff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .item-badge .date {
+            font-size: 0.72rem;
+            color: #00A86B;
+            font-weight: 700;
+            background: #f0fdf4;
+            padding: 2px 6px;
+            border-radius: 4px;
         }
 
         /* Bottom Navigation Bar */
@@ -304,6 +453,13 @@
                 grid-template-columns: 1fr;
             }
 
+            .group-label {
+                width: 130px;
+                min-width: 130px;
+                font-size: 0.78rem;
+                padding-right: 8px;
+            }
+
             .bottom-nav {
                 margin: 0 -12px;
             }
@@ -363,12 +519,133 @@
                 <p>Browse published books, digital manuscripts, and full works.</p>
             </div>
 
-            <div class="category-card" onclick="location.href='comments.html'">
-                <i class="fa-solid fa-comments category-icon"></i>
-                <h3>Public Comments</h3>
-                <p>Join the conversation and post community feedback.</p>
+            <div class="category-card" onclick="location.href='articles.html'">
+                <i class="fa-solid fa-newspaper category-icon"></i>
+                <h3>Public Articles</h3>
+                <p>Read insightful articles, essays, and community viewpoints.</p>
             </div>
         </main>
+
+        <!-- Bounded Rectangle with 6 Fixed Category Ticker Lines -->
+        <section class="highlights-container">
+            <div class="highlights-header">
+                <i class="fa-solid fa-bullhorn"></i> New Uploads This Month
+            </div>
+
+            <div class="ticker-list">
+                <!-- Line 1: Songs -->
+                <div class="ticker-row">
+                    <div class="group-label">
+                        <span class="blink-dot"></span>
+                        <i class="fa-solid fa-music"></i> Songs
+                    </div>
+                    <div class="marquee-container">
+                        <div class="marquee-track">
+                            <span class="item-badge">🎵 Khamba Thoibi Folk Melody <span class="date">NEW</span></span>
+                            <span class="item-badge">🎸 Echoes of Loktak Lake <span class="date">NEW</span></span>
+                            <span class="item-badge">🎼 Autumn Harvest Song <span class="date">NEW</span></span>
+                            <!-- Duplicated for smooth infinite loop -->
+                            <span class="item-badge">🎵 Khamba Thoibi Folk Melody <span class="date">NEW</span></span>
+                            <span class="item-badge">🎸 Echoes of Loktak Lake <span class="date">NEW</span></span>
+                            <span class="item-badge">🎼 Autumn Harvest Song <span class="date">NEW</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Line 2: Videos -->
+                <div class="ticker-row">
+                    <div class="group-label">
+                        <span class="blink-dot"></span>
+                        <i class="fa-solid fa-clapperboard"></i> Videos
+                    </div>
+                    <div class="marquee-container">
+                        <div class="marquee-track">
+                            <span class="item-badge">🎬 Traditional Manipuri Dance Performance <span class="date">NEW</span></span>
+                            <span class="item-badge">📹 Hills & Valleys Documentary <span class="date">NEW</span></span>
+                            <span class="item-badge">🎥 Visual Short: Shadows of Imphal <span class="date">NEW</span></span>
+                            <!-- Duplicated for smooth infinite loop -->
+                            <span class="item-badge">🎬 Traditional Manipuri Dance Performance <span class="date">NEW</span></span>
+                            <span class="item-badge">📹 Hills & Valleys Documentary <span class="date">NEW</span></span>
+                            <span class="item-badge">🎥 Visual Short: Shadows of Imphal <span class="date">NEW</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Line 3: Short Stories -->
+                <div class="ticker-row">
+                    <div class="group-label">
+                        <span class="blink-dot"></span>
+                        <i class="fa-solid fa-book-open-reader"></i> Short Stories
+                    </div>
+                    <div class="marquee-container">
+                        <div class="marquee-track">
+                            <span class="item-badge">📖 The Weaver of Ningthoukhong <span class="date">NEW</span></span>
+                            <span class="item-badge">📖 Whispering Pines of Ukhrul <span class="date">NEW</span></span>
+                            <span class="item-badge">📖 The Old Bridge Legend <span class="date">NEW</span></span>
+                            <!-- Duplicated for smooth infinite loop -->
+                            <span class="item-badge">📖 The Weaver of Ningthoukhong <span class="date">NEW</span></span>
+                            <span class="item-badge">📖 Whispering Pines of Ukhrul <span class="date">NEW</span></span>
+                            <span class="item-badge">📖 The Old Bridge Legend <span class="date">NEW</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Line 4: Poems -->
+                <div class="ticker-row">
+                    <div class="group-label">
+                        <span class="blink-dot"></span>
+                        <i class="fa-solid fa-feather-pointed"></i> Poems
+                    </div>
+                    <div class="marquee-container">
+                        <div class="marquee-track">
+                            <span class="item-badge">✍️ Songs of the Morning Breeze <span class="date">NEW</span></span>
+                            <span class="item-badge">✍️ Crimson Horizons <span class="date">NEW</span></span>
+                            <span class="item-badge">✍️ Petals on the Lake <span class="date">NEW</span></span>
+                            <!-- Duplicated for smooth infinite loop -->
+                            <span class="item-badge">✍️ Songs of the Morning Breeze <span class="date">NEW</span></span>
+                            <span class="item-badge">✍️ Crimson Horizons <span class="date">NEW</span></span>
+                            <span class="item-badge">✍️ Petals on the Lake <span class="date">NEW</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Line 5: Books -->
+                <div class="ticker-row">
+                    <div class="group-label">
+                        <span class="blink-dot"></span>
+                        <i class="fa-solid fa-book"></i> Books
+                    </div>
+                    <div class="marquee-container">
+                        <div class="marquee-track">
+                            <span class="item-badge">📚 Chronicles of Kangleipak Vol. II <span class="date">NEW</span></span>
+                            <span class="item-badge">📚 Modern Meitei Literature Anthology <span class="date">NEW</span></span>
+                            <!-- Duplicated for smooth infinite loop -->
+                            <span class="item-badge">📚 Chronicles of Kangleipak Vol. II <span class="date">NEW</span></span>
+                            <span class="item-badge">📚 Modern Meitei Literature Anthology <span class="date">NEW</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Line 6: Public Articles -->
+                <div class="ticker-row">
+                    <div class="group-label">
+                        <span class="blink-dot"></span>
+                        <i class="fa-solid fa-newspaper"></i> Public Articles
+                    </div>
+                    <div class="marquee-container">
+                        <div class="marquee-track">
+                            <span class="item-badge">📰 Preserving Traditional Handloom Crafts <span class="date">NEW</span></span>
+                            <span class="item-badge">📰 Cultural Evolution in Digital Era <span class="date">NEW</span></span>
+                            <span class="item-badge">📰 Folk Instruments of Manipur <span class="date">NEW</span></span>
+                            <!-- Duplicated for smooth infinite loop -->
+                            <span class="item-badge">📰 Preserving Traditional Handloom Crafts <span class="date">NEW</span></span>
+                            <span class="item-badge">📰 Cultural Evolution in Digital Era <span class="date">NEW</span></span>
+                            <span class="item-badge">📰 Folk Instruments of Manipur <span class="date">NEW</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <!-- Bottom Navigation Bar -->
