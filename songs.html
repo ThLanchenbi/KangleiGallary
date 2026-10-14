@@ -3,70 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kanglei Art Gallery - Audio Player</title>
+    <title>Kanglei Art Gallery - MP3 Songs</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+            background-color: #f4f4f4;
             color: #333;
-            max-width: 800px;
+            max-width: 600px;
             margin: 40px auto;
             padding: 20px;
+            background: #fff;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
+
         h1 {
             text-align: center;
             color: #8b0000;
-        }
-        .track-card {
-            background: #fff;
-            padding: 15px 20px;
             margin-bottom: 20px;
+        }
+
+        /* Player Styling */
+        .player-container {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            padding: 15px;
             border-radius: 6px;
-            border-left: 5px solid #8b0000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            text-align: center;
         }
-        .track-card h3 {
-            margin-top: 0;
+
+        .now-playing {
+            font-weight: bold;
             margin-bottom: 10px;
+            color: #555;
         }
+
         audio {
             width: 100%;
+        }
+
+        /* Playlist Styling */
+        .playlist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .track-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .track-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .track-item.active {
+            background-color: #fbf0f0;
+            font-weight: bold;
+            color: #8b0000;
+        }
+
+        .play-btn {
+            font-size: 14px;
+            color: #8b0000;
         }
     </style>
 </head>
 <body>
 
-    <h1>Kanglei Art Gallery Audio Guide</h1>
-    <p style="text-align: center;">Listen to our curated collection of artwork descriptions and traditional compositions.</p>
+    <h1>Kanglei Art Gallery Songs</h1>
 
-    <!-- Sample 1: Your Google Drive Track -->
-    <div class="track-card">
-        <h3>Sample 1: Gallery Introduction & Art Overview</h3>
-        <audio controls>
-            <source src="https://drive.google.com/uc?export=download&id=1Tlz8d5_SA6SUx1uOBITrIuWPPfdJBtch" type="audio/mpeg">
+    <!-- Main Audio Player -->
+    <div class="player-container">
+        <div class="now-playing" id="nowPlaying">Select a song to play</div>
+        <audio id="mainAudioPlayer" controls>
+            <source id="audioSource" src="https://drive.google.com/uc?export=download&id=1Tlz8d5_SA6SUx1uOBITrIuWPPfdJBtch" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
     </div>
 
-    <!-- Sample 2: Placeholder Track -->
-    <div class="track-card">
-        <h3>Sample 2: Traditional Manipuri Folk Melody</h3>
-        <audio controls>
-            <source src="YOUR_SECOND_AUDIO_LINK_HERE.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-    </div>
+    <!-- Interactive Song List -->
+    <ul class="playlist">
+        <!-- Sample 1 (Your Google Drive Track) -->
+        <li class="track-item active" onclick="playSong('https://drive.google.com/uc?export=download&id=1Tlz8d5_SA6SUx1uOBITrIuWPPfdJBtch', 'Sample 1: Gallery Theme Song', this)">
+            <span>1. Sample 1: Gallery Theme Song</span>
+            <span class="play-btn">▶ Play</span>
+        </li>
 
-    <!-- Sample 3: Placeholder Track -->
-    <div class="track-card">
-        <h3>Sample 3: Artist Interview & Commentary</h3>
-        <audio controls>
-            <source src="YOUR_THIRD_AUDIO_LINK_HERE.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-    </div>
+        <!-- Sample 2 -->
+        <li class="track-item" onclick="playSong('YOUR_SECOND_AUDIO_LINK_HERE.mp3', 'Sample 2: Traditional Folk Melody', this)">
+            <span>2. Sample 2: Traditional Folk Melody</span>
+            <span class="play-btn">▶ Play</span>
+        </li>
+
+        <!-- Sample 3 -->
+        <li class="track-item" onclick="playSong('YOUR_THIRD_AUDIO_LINK_HERE.mp3', 'Sample 3: Cultural Background Track', this)">
+            <span>3. Sample 3: Cultural Background Track</span>
+            <span class="play-btn">▶ Play</span>
+        </li>
+    </ul>
+
+    <script>
+        function playSong(url, title, element) {
+            var player = document.getElementById('mainAudioPlayer');
+            var source = document.getElementById('audioSource');
+            var titleDisplay = document.getElementById('nowPlaying');
+            var items = document.querySelectorAll('.track-item');
+
+            // Update Audio Source and Title
+            source.src = url;
+            titleDisplay.textContent = "Now Playing: " + title;
+
+            // Update Active Highlight
+            items.forEach(function(item) {
+                item.classList.remove('active');
+            });
+            element.classList.add('active');
+
+            // Reload and Play Track
+            player.load();
+            player.play();
+        }
+    </script>
 
 </body>
 </html>
