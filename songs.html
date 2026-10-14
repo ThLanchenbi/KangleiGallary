@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kanglei Art Gallery - Audio Player</title>
+    <title>Kanglei Art Gallery - MP3 Songs</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,7 +23,7 @@
             margin-bottom: 20px;
         }
 
-        /* Main Player Styles */
+        /* Main Player Styling */
         .player-container {
             background: #fafafa;
             border: 1px solid #ddd;
@@ -43,7 +43,7 @@
             width: 100%;
         }
 
-        /* Song List Styles */
+        /* Playlist Styling */
         .playlist {
             list-style: none;
             padding: 0;
@@ -82,31 +82,30 @@
 
     <!-- Main Audio Player -->
     <div class="player-container">
-        <div class="now-playing" id="nowPlaying">Now Playing: Sample 1 (Your Submitted Audio)</div>
+        <div class="now-playing" id="nowPlaying">Now Playing: Track 1 (Catbox Audio)</div>
         <audio id="mainAudioPlayer" controls>
-            <!-- Your Google Drive audio link loaded by default -->
-            <source id="audioSource" src="https://drive.google.com/uc?export=download&id=1Tlz8d5_SA6SUx1uOBITrIuWPPfdJBtch" type="audio/mpeg">
+            <source id="audioSource" src="https://files.catbox.moe/fmnehf.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
     </div>
 
-    <!-- MP3 Song List -->
+    <!-- Interactive Song List -->
     <ul class="playlist">
-        <!-- Sample 1: Uses your submitted Google Drive audio link -->
-        <li class="track-item active" onclick="playSong('https://drive.google.com/uc?export=download&id=1Tlz8d5_SA6SUx1uOBITrIuWPPfdJBtch', 'Sample 1 (Your Submitted Audio)', this)">
-            <span>1. Sample 1 (Your Submitted Audio)</span>
+        <!-- Sample 1: Your Catbox Direct Link -->
+        <li class="track-item active" onclick="playSong('https://files.catbox.moe/fmnehf.mp3', 'Track 1 (Catbox Audio)', this)">
+            <span>1. Track 1 (Catbox Audio)</span>
             <span class="play-btn">▶ Play</span>
         </li>
 
         <!-- Sample 2 Placeholder -->
-        <li class="track-item" onclick="playSong('YOUR_SECOND_AUDIO_LINK.mp3', 'Sample 2: Traditional Folk Melody', this)">
-            <span>2. Sample 2: Traditional Folk Melody</span>
+        <li class="track-item" onclick="playSong('YOUR_SECOND_CATBOX_LINK.mp3', 'Track 2: Traditional Folk Melody', this)">
+            <span>2. Track 2: Traditional Folk Melody</span>
             <span class="play-btn">▶ Play</span>
         </li>
 
         <!-- Sample 3 Placeholder -->
-        <li class="track-item" onclick="playSong('YOUR_THIRD_AUDIO_LINK.mp3', 'Sample 3: Gallery Background Track', this)">
-            <span>3. Sample 3: Gallery Background Track</span>
+        <li class="track-item" onclick="playSong('YOUR_THIRD_CATBOX_LINK.mp3', 'Track 3: Gallery Background Track', this)">
+            <span>3. Track 3: Gallery Background Track</span>
             <span class="play-btn">▶ Play</span>
         </li>
     </ul>
@@ -118,17 +117,17 @@
             var titleDisplay = document.getElementById('nowPlaying');
             var items = document.querySelectorAll('.track-item');
 
-            // Set new stream source and display label
+            // Update Audio Source and Title
             source.src = url;
             titleDisplay.textContent = "Now Playing: " + title;
 
-            // Highlight selected song in list
+            // Highlight Selected Track
             items.forEach(function(item) {
                 item.classList.remove('active');
             });
             element.classList.add('active');
 
-            // Load and play song instantly
+            // Load and Play Instantly
             player.load();
             player.play();
         }
