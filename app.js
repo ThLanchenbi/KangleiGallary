@@ -1,51 +1,75 @@
+// Import essential Firebase functions
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    updateProfile 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-// TODO: Replace with your project's correct Firebase configuration keys
+// Your exact Firebase project configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyD8J63xcQ5kv_m5pET2Eoza2XtyFoiE9ts",
+    authDomain: "kangleiartgallery.firebaseapp.com",
+    projectId: "kangleiartgallery",
+    storageBucket: "kangleiartgallery.firebasestorage.app",
+    messagingSenderId: "323900091246",
+    appId: "1:323900091246:web:3249ca58eccdde7aa5af7f",
+    measurementId: "G-Y2LC0E185P"
 };
 
+// Initialize Firebase App & Authentication
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Handle Registration Form
-const registerForm = document.getElementById("registerForm");
+// ==========================================
+// 1. HANDLE USER REGISTRATION (register.html)
+// ==========================================
+const registerForm = document.getElementById('registerForm');
 if (registerForm) {
-  registerForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("regEmail").value;
-    const password = document.getElementById("regPassword").value;
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      alert("Registration successful! Welcome to Kanglei Gallery.");
-      window.location.href = "index.html";
-    } catch (error) {
-      alert("Error registering: " + error.message);
-    }
-  });
+        const name = document.getElementById('regName').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const password = document.getElementById('regPassword').value;
+
+        try {
+            // Create user with Email and Password
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+            // Save the user's Full Name to their Firebase profile
+            await updateProfile(userCredential.user, {
+                displayName: name
+            });
+
+            alert('Account created successfully! Welcome to Kanglei Art Gallery.');
+            window.location.href = 'index.html'; // Redirect to home page
+        } catch (error) {
+            alert('Registration Failed: ' + error.message);
+        }
+    });
 }
 
-// Handle Login Form
-const loginForm = document.getElementById("loginForm");
+// ==========================================
+// 2. HANDLE USER LOGIN (login.html)
+// ==========================================
+const loginForm = document.getElementById('loginForm');
 if (loginForm) {
-  loginForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      alert("Logged in successfully!");
-      window.location.href = "index.html";
-    } catch (error) {
-      alert("Error logging in: " + error.message);
-    }
-  });
+        const email = document.getElementById('loginEmail') ? document.getElementById('loginEmail').value.trim() : document.getElementById('regEmail').value.trim();
+        const password = document.getElementById('loginPassword') ? document.getElementById('loginPassword').value : document.getElementById('regPassword').value;
+
+        try {
+            // Sign in user with Firebase
+            await signInWithEmailAndPassword(auth, email, password);
+
+            alert('Logged in successfully!');
+            window.location.href = 'index.html'; // Redirect to home page
+        } catch (error) {
+            alert('Login Failed: ' + error.message);
+        }
+    });
 }
