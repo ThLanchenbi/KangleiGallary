@@ -1,419 +1,72 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VibeStream - YouTube Song Player & Playlist Manager</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#0f172a',
-                        cardBg: '#1e293b',
-                        accent: '#6366f1',
-                        accentHover: '#4f46e5'
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Kanglei Art Gallery - Audio Player</title>
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        /* Custom scrollbar for playlist */
-        ::-webkit-scrollbar {
-            width: 6px;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        ::-webkit-scrollbar-track {
-            background: #1e293b;
+        h1 {
+            text-align: center;
+            color: #8b0000;
         }
-        ::-webkit-scrollbar-thumb {
-            background: #475569;
-            border-radius: 3px;
+        .track-card {
+            background: #fff;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border-left: 5px solid #8b0000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #64748b;
+        .track-card h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        audio {
+            width: 100%;
         }
     </style>
 </head>
-<body class="bg-darkBg text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+<body>
 
-    <header class="bg-cardBg/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-30 px-4 lg:px-8 py-4 flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-            <div class="bg-gradient-to-tr from-indigo-600 to-violet-500 text-white p-2.5 rounded-xl shadow-lg shadow-indigo-500/30 flex items-center justify-center">
-                <i class="fa-solid fa-headphones-simple text-xl"></i>
-            </div>
-            <div>
-                <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">VibeStream</h1>
-                <p class="text-xs text-slate-400">YouTube Playlist Player</p>
-            </div>
-        </div>
-        
-        <div class="flex items-center space-x-3">
-            <button onclick="openAddSongModal()" class="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-medium transition shadow-lg shadow-indigo-600/20">
-                <i class="fa-solid fa-plus"></i>
-                <span>Add Song</span>
-            </button>
-            <div class="hidden md:flex items-center space-x-2 bg-slate-900/60 px-3 py-1.5 rounded-xl border border-slate-800 text-xs text-slate-400">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span id="total-songs-badge">0 Songs Loaded</span>
-            </div>
-        </div>
-    </header>
+    <h1>Kanglei Art Gallery Audio Guide</h1>
+    <p style="text-align: center;">Listen to our curated collection of artwork descriptions and traditional compositions.</p>
 
-    <main class="flex-grow container mx-auto px-4 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl">
-        
-        <!-- Left & Center: Video Player and Details -->
-        <div class="lg:col-span-2 flex flex-col space-y-6">
-            
-            <!-- Video Player Container -->
-            <div class="bg-cardBg rounded-2xl shadow-xl border border-slate-800 overflow-hidden flex flex-col">
-                <div class="relative w-full aspect-video bg-black flex items-center justify-center">
-                    <div id="player-container" class="absolute inset-0 w-full h-full">
-                        <iframe id="yt-player" class="w-full h-full" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                    </div>
-                    <div id="player-placeholder" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 text-slate-500 space-y-2 hidden">
-                        <i class="fa-solid fa-music text-4xl animate-bounce text-indigo-500"></i>
-                        <p class="text-sm">Select a song from the playlist to start listening</p>
-                    </div>
-                </div>
-
-                <!-- Now Playing Details -->
-                <div class="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-b from-cardBg to-slate-900/50 border-t border-slate-800">
-                    <div class="space-y-1">
-                        <div class="flex items-center space-x-2">
-                            <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-semibold uppercase tracking-wider border border-indigo-500/20">Now Playing</span>
-                            <span id="current-index-label" class="text-xs text-slate-400">Track 0 of 0</span>
-                        </div>
-                        <h2 id="current-title" class="text-lg font-bold text-slate-100 line-clamp-1">Select a song</h2>
-                        <p id="current-artist" class="text-sm text-slate-400">Artist Name</p>
-                    </div>
-
-                    <!-- Player Controls Toolbar -->
-                    <div class="flex items-center space-x-3 self-end sm:self-center">
-                        <button onclick="playPreviousSong()" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center transition border border-slate-700" title="Previous Song">
-                            <i class="fa-solid fa-backward-step"></i>
-                        </button>
-                        <button onclick="toggleAutoPlayNext()" id="autoplay-btn" class="px-3 py-2 rounded-xl bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 text-xs font-medium flex items-center space-x-1.5 transition" title="Toggle Auto-Play Next">
-                            <i class="fa-solid fa-rotate"></i>
-                            <span>Auto-Play: <strong id="autoplay-status">ON</strong></span>
-                        </button>
-                        <button onclick="playNextSong()" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center transition border border-slate-700" title="Next Song">
-                            <i class="fa-solid fa-forward-step"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Right Col: Playlist Sidebar & Search -->
-        <div class="lg:col-span-1 flex flex-col bg-cardBg rounded-2xl shadow-xl border border-slate-800 overflow-hidden h-[600px] lg:h-auto">
-            <div class="p-4 border-b border-slate-800 space-y-3 bg-slate-900/40">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-bold text-slate-200 flex items-center space-x-2">
-                        <i class="fa-solid fa-list-ul text-indigo-400"></i>
-                        <span>Playlist Queue</span>
-                    </h3>
-                    <span id="filtered-count" class="text-xs text-slate-400">Showing all</span>
-                </div>
-                
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
-                        <i class="fa-solid fa-magnifying-glass text-xs"></i>
-                    </span>
-                    <input type="text" id="song-search-input" oninput="filterPlaylist()" placeholder="Search by song or artist..." class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition">
-                </div>
-            </div>
-
-            <!-- Scrollable Playlist Items Container -->
-            <div id="playlist-container" class="flex-grow overflow-y-auto p-3 space-y-2">
-                <!-- Dynamically rendered playlist items will appear here -->
-            </div>
-        </div>
-    </main>
-
-    <!-- Add Song Modal -->
-    <div id="add-song-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-cardBg border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-200">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="p-2.5 bg-indigo-500/20 text-indigo-400 rounded-xl">
-                        <i class="fa-solid fa-plus text-xl"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-100">Add New Song</h3>
-                </div>
-                <button onclick="closeAddSongModal()" class="text-slate-400 hover:text-slate-200 p-2 rounded-lg transition">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-
-            <form id="add-song-form" onsubmit="handleAddNewSong(event)" class="space-y-4">
-                <div class="space-y-1.5">
-                    <label class="text-xs font-medium text-slate-300">Song Title</label>
-                    <input type="text" id="new-song-title" required placeholder="e.g. Chill Sunset Lofi" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500">
-                </div>
-
-                <div class="space-y-1.5">
-                    <label class="text-xs font-medium text-slate-300">Artist Name</label>
-                    <input type="text" id="new-song-artist" required placeholder="e.g. Lofi Artist" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500">
-                </div>
-
-                <div class="space-y-1.5">
-                    <label class="text-xs font-medium text-slate-300">YouTube Video URL or ID</label>
-                    <input type="text" id="new-song-url" required placeholder="e.g. https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500">
-                    <p class="text-[10px] text-slate-500">Paste full YouTube link or just the 11-character ID.</p>
-                </div>
-
-                <div class="flex justify-end space-x-3 pt-2">
-                    <button type="button" onclick="closeAddSongModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition">
-                        Cancel
-                    </button>
-                    <button type="submit" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition shadow-lg shadow-indigo-600/30">
-                        Add to Playlist
-                    </button>
-                </div>
-            </form>
-        </div>
+    <!-- Sample 1: Your Google Drive Track -->
+    <div class="track-card">
+        <h3>Sample 1: Gallery Introduction & Art Overview</h3>
+        <audio controls>
+            <source src="https://drive.google.com/uc?export=download&id=1Tlz8d5_SA6SUx1uOBITrIuWPPfdJBtch" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
     </div>
 
-    <footer class="bg-cardBg/40 border-t border-slate-800/80 py-4 text-center text-xs text-slate-500">
-        <p>VibeStream YouTube Player &bull; Clean Interactive Playlist</p>
-    </footer>
+    <!-- Sample 2: Placeholder Track -->
+    <div class="track-card">
+        <h3>Sample 2: Traditional Manipuri Folk Melody</h3>
+        <audio controls>
+            <source src="YOUR_SECOND_AUDIO_LINK_HERE.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
 
-    <script>
-        // Initial playlist data
-        let playlistData = [
-            {
-                title: "Lofi Hip Hop Radio - Beats to Relax/Study to",
-                artist: "Lofi Girl",
-                youtubeId: "jfKfPfyJRdk"
-            },
-            {
-                title: "Chillhop Radio - Jazzy & Lofi Hip Hop Beats",
-                artist: "Chillhop Music",
-                youtubeId: "5qap5aO4i9A"
-            },
-            {
-                title: "Synthwave Radio - Chill Synth / Retro Beats",
-                artist: "Lofi Girl Synthwave",
-                youtubeId: "4xDzrJKXOOY"
-            },
-            {
-                title: "Coffee Shop Acoustic Guitar Instrumentals",
-                artist: "Acoustic Morning",
-                youtubeId: "1fueZCTYkpA"
-            }
-        ];
+    <!-- Sample 3: Placeholder Track -->
+    <div class="track-card">
+        <h3>Sample 3: Artist Interview & Commentary</h3>
+        <audio controls>
+            <source src="YOUR_THIRD_AUDIO_LINK_HERE.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
 
-        let currentSongIndex = 0;
-        let isAutoPlayNext = true;
-        let filteredSongs = [...playlistData];
-
-        const ytPlayer = document.getElementById('yt-player');
-        const playerPlaceholder = document.getElementById('player-placeholder');
-        const currentTitleEl = document.getElementById('current-title');
-        const currentArtistEl = document.getElementById('current-artist');
-        const currentIndexLabel = document.getElementById('current-index-label');
-        const playlistContainer = document.getElementById('playlist-container');
-        const searchInput = document.getElementById('song-search-input');
-        const totalSongsBadge = document.getElementById('total-songs-badge');
-        const filteredCountEl = document.getElementById('filtered-count');
-        const autoplayStatusEl = document.getElementById('autoplay-status');
-
-        window.onload = function() {
-            totalSongsBadge.textContent = `${playlistData.length} Songs Loaded`;
-            renderPlaylist();
-            if (playlistData.length > 0) {
-                playSong(0);
-            }
-        };
-
-        function renderPlaylist() {
-            playlistContainer.innerHTML = '';
-
-            if (filteredSongs.length === 0) {
-                playlistContainer.innerHTML = `
-                    <div class="text-center py-10 text-slate-500 space-y-2">
-                        <i class="fa-solid fa-face-frown text-2xl"></i>
-                        <p class="text-xs">No songs found matching your search.</p>
-                    </div>
-                `;
-                filteredCountEl.textContent = '0 matches';
-                return;
-            }
-
-            filteredCountEl.textContent = `Showing ${filteredSongs.length} of ${playlistData.length}`;
-
-            filteredSongs.forEach((song) => {
-                const originalIndex = playlistData.findIndex(s => s.youtubeId === song.youtubeId);
-                const isPlaying = originalIndex === currentSongIndex;
-
-                const item = document.createElement('div');
-                item.className = `group flex items-center justify-between p-2.5 rounded-xl cursor-pointer transition border ${
-                    isPlaying 
-                        ? 'bg-indigo-600/15 border-indigo-500/40 text-indigo-300 shadow-sm' 
-                        : 'bg-slate-900/40 border-slate-800/80 hover:bg-slate-800/60 text-slate-300'
-                }`;
-
-                const thumbUrl = `https://img.youtube.com/vi/${song.youtubeId}/hqdefault.jpg`;
-
-                item.innerHTML = `
-                    <div class="flex items-center space-x-3 overflow-hidden">
-                        <div class="relative w-12 h-12 rounded-lg bg-slate-800 overflow-hidden shrink-0 flex items-center justify-center">
-                            <img src="${thumbUrl}" alt="${song.title}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/1e293b/6366f1?text=Music'">
-                            ${isPlaying ? '<div class="absolute inset-0 bg-indigo-950/60 flex items-center justify-center"><i class="fa-solid fa-volume-high text-indigo-400 text-xs animate-pulse"></i></div>' : ''}
-                        </div>
-                        <div class="min-w-0">
-                            <h4 class="text-xs font-semibold truncate ${isPlaying ? 'text-indigo-300' : 'text-slate-200'}">${song.title}</h4>
-                            <p class="text-[11px] text-slate-400 truncate">${song.artist}</p>
-                        </div>
-                    </div>
-                    <div class="pl-2 shrink-0 flex items-center space-x-2">
-                        <button onclick="event.stopPropagation(); deleteSong(${originalIndex})" class="w-7 h-7 rounded-lg flex items-center justify-center bg-slate-800 text-slate-500 hover:text-red-400 hover:bg-slate-700 transition" title="Delete song">
-                            <i class="fa-solid fa-trash text-[10px]"></i>
-                        </button>
-                        <div class="w-8 h-8 rounded-lg flex items-center justify-center ${isPlaying ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-400 group-hover:text-slate-200 group-hover:bg-slate-700'} transition">
-                            <i class="fa-solid ${isPlaying ? 'fa-pause text-xs' : 'fa-play text-xs'}"></i>
-                        </div>
-                    </div>
-                `;
-
-                item.onclick = () => playSong(originalIndex);
-                playlistContainer.appendChild(item);
-            });
-        }
-
-        function playSong(index) {
-            if (index < 0 || index >= playlistData.length) return;
-            currentSongIndex = index;
-            const song = playlistData[currentSongIndex];
-
-            ytPlayer.src = `https://www.youtube.com/embed/${song.youtubeId}?autoplay=1&enablejsapi=1`;
-            playerPlaceholder.classList.add('hidden');
-
-            currentTitleEl.textContent = song.title;
-            currentArtistEl.textContent = song.artist;
-            
-            if(currentIndexLabel) {
-                currentIndexLabel.textContent = `Track ${currentSongIndex + 1} of ${playlistData.length}`;
-            }
-
-            renderPlaylist();
-        }
-
-        function playNextSong() {
-            if (playlistData.length === 0) return;
-            let nextIndex = currentSongIndex + 1;
-            if (nextIndex >= playlistData.length) {
-                nextIndex = 0;
-            }
-            playSong(nextIndex);
-        }
-
-        function playPreviousSong() {
-            if (playlistData.length === 0) return;
-            let prevIndex = currentSongIndex - 1;
-            if (prevIndex < 0) {
-                prevIndex = playlistData.length - 1;
-            }
-            playSong(prevIndex);
-        }
-
-        function filterPlaylist() {
-            const query = searchInput.value.toLowerCase().trim();
-            if (!query) {
-                filteredSongs = [...playlistData];
-            } else {
-                filteredSongs = playlistData.filter(song => 
-                    song.title.toLowerCase().includes(query) || 
-                    song.artist.toLowerCase().includes(query)
-                );
-            }
-            renderPlaylist();
-        }
-
-        function toggleAutoPlayNext() {
-            isAutoPlayNext = !isAutoPlayNext;
-            autoplayStatusEl.textContent = isAutoPlayNext ? "ON" : "OFF";
-            const btn = document.getElementById('autoplay-btn');
-            if (isAutoPlayNext) {
-                btn.className = "px-3 py-2 rounded-xl bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 text-xs font-medium flex items-center space-x-1.5 transition";
-            } else {
-                btn.className = "px-3 py-2 rounded-xl bg-slate-800 text-slate-400 border border-slate-700 text-xs font-medium flex items-center space-x-1.5 transition";
-            }
-        }
-
-        function extractYouTubeId(urlOrId) {
-            if (!urlOrId) return '';
-            const cleanInput = urlOrId.trim();
-            if (cleanInput.length === 11 && !cleanInput.includes('/')) {
-                return cleanInput;
-            }
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = cleanInput.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : cleanInput.slice(-11);
-        }
-
-        function openAddSongModal() {
-            document.getElementById('add-song-modal').classList.remove('hidden');
-        }
-
-        function closeAddSongModal() {
-            document.getElementById('add-song-modal').classList.add('hidden');
-            document.getElementById('add-song-form').reset();
-        }
-
-        function handleAddNewSong(e) {
-            e.preventDefault();
-            const title = document.getElementById('new-song-title').value.trim();
-            const artist = document.getElementById('new-song-artist').value.trim();
-            const rawUrl = document.getElementById('new-song-url').value.trim();
-            const youtubeId = extractYouTubeId(rawUrl);
-
-            if (!youtubeId || youtubeId.length < 5) {
-                alert('Please enter a valid YouTube video URL or ID.');
-                return;
-            }
-
-            playlistData.push({ title, artist, youtubeId });
-            filterPlaylist();
-            totalSongsBadge.textContent = `${playlistData.length} Songs Loaded`;
-            closeAddSongModal();
-
-            // If this is the first song, play it automatically
-            if (playlistData.length === 1) {
-                playSong(0);
-            }
-        }
-
-        function deleteSong(index) {
-            playlistData.splice(index, 1);
-            filterPlaylist();
-            totalSongsBadge.textContent = `${playlistData.length} Songs Loaded`;
-            if (playlistData.length === 0) {
-                ytPlayer.src = '';
-                playerPlaceholder.classList.remove('hidden');
-                currentTitleEl.textContent = 'No songs in queue';
-                currentArtistEl.textContent = 'Add a song to begin';
-                currentIndexLabel.textContent = 'Track 0 of 0';
-            } else if (currentSongIndex >= playlistData.length) {
-                playSong(0);
-            }
-        }
-
-        window.onclick = function(event) {
-            const modal = document.getElementById('add-song-modal');
-            if (event.target === modal) {
-                closeAddSongModal();
-            }
-        }
-    </script>
 </body>
 </html>
