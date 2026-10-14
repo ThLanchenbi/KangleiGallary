@@ -9,15 +9,14 @@ import {
 
 // Your exact Firebase project configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyD8J63xcQ5kv_m5pET2Eoza2XtyFoiE9ts",
-    authDomain: "kangleiartgallery.firebaseapp.com",
-    projectId: "kangleiartgallery",
-    storageBucket: "kangleiartgallery.firebasestorage.app",
-    messagingSenderId: "323900091246",
-    appId: "1:323900091246:web:3249ca58eccdde7aa5af7f",
-    measurementId: "G-Y2LC0E185P"
+  apiKey: "AIzaSyD8J63xcQ5kv_m5pET2Eoza2XtyFoie9ts",
+  authDomain: "kangleiartgallery.firebaseapp.com",
+  projectId: "kangleiartgallery",
+  storageBucket: "kangleiartgallery.firebasestorage.app",
+  messagingSenderId: "323900091246",
+  appId: "1:323900091246:web:3249ca58eccdde7aa5af7f",
+  measurementId: "G-Y2LC0E185P"
 };
-
 // Initialize Firebase App & Authentication
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
