@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kanglei Art Gallery - Audio Player</title>
+    <title>Kanglei Art Gallery - YouTube Audio Player</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,8 +23,7 @@
             margin-bottom: 20px;
         }
 
-        /* Player Container */
-        .player-container {
+        .video-card {
             background: #fafafa;
             border: 1px solid #ddd;
             padding: 15px;
@@ -33,132 +32,52 @@
             text-align: center;
         }
 
-        .now-playing {
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #555;
+        .video-card h3 {
+            margin-top: 0;
+            color: #8b0000;
+            font-size: 16px;
         }
 
-        audio {
+        /* Responsive YouTube Container */
+        .video-container {
+            position: relative;
             width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
         }
 
-        /* Playlist Styling */
-        .playlist {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .track-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 15px;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .track-item:hover {
-            background-color: #f0f0f0;
-        }
-
-        .track-item.active {
-            background-color: #fbf0f0;
-            font-weight: bold;
-            color: #8b0000;
-        }
-
-        .play-btn {
-            font-size: 14px;
-            color: #8b0000;
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+            border: none;
         }
     </style>
 </head>
 <body>
 
-    <h1>Kanglei Art Gallery Songs</h1>
+    <h1>Kanglei Art Gallery Tracks</h1>
 
-    <!-- Main Audio Player -->
-    <div class="player-container">
-        <div class="now-playing" id="nowPlaying">Now Playing: Track 1 (Google Drive Track)</div>
-        <audio id="mainAudioPlayer" controls>
-            <source id="audioSource" src="https://drive.google.com/uc?export=download&id=1Tlz8d5_SA6SUx1uOBITrIuWPPfdJBtch" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
+    <!-- Track 1: YouTube Embed -->
+    <div class="video-card">
+        <h3>Sample 1: Traditional Gallery Track</h3>
+        <div class="video-container">
+            <!-- Replace YOUTUBE_VIDEO_ID_1 with your actual YouTube ID -->
+            <iframe src="https://www.youtube.com/embed/YOUTUBE_VIDEO_ID_1" allowfullscreen></iframe>
+        </div>
     </div>
 
-    <!-- Song List -->
-    <ul class="playlist" id="playlist">
-        <!-- Track 1: Google Drive -->
-        <li class="track-item active" data-src="https://drive.google.com/uc?export=download&id=1Tlz8d5_SA6SUx1uOBITrIuWPPfdJBtch" data-title="Track 1 (Google Drive Track)" onclick="selectAndPlay(this)">
-            <span>1. Track 1 (Google Drive Track)</span>
-            <span class="play-btn">▶ Play</span>
-        </li>
-
-        <!-- Track 2: Catbox -->
-        <li class="track-item" data-src="https://files.catbox.moe/fmnehf.mp3" data-title="Track 2 (Catbox Track)" onclick="selectAndPlay(this)">
-            <span>2. Track 2 (Catbox Track)</span>
-            <span class="play-btn">▶ Play</span>
-        </li>
-
-        <!-- Track 3 Placeholder -->
-        <li class="track-item" data-src="YOUR_THIRD_DIRECT_MP3_LINK.mp3" data-title="Track 3 (Cultural Track)" onclick="selectAndPlay(this)">
-            <span>3. Track 3 (Cultural Track)</span>
-            <span class="play-btn">▶ Play</span>
-        </li>
-    </ul>
-
-    <script>
-        var player = document.getElementById('mainAudioPlayer');
-        var source = document.getElementById('audioSource');
-        var titleDisplay = document.getElementById('nowPlaying');
-        var trackItems = document.querySelectorAll('.track-item');
-        var currentTrackIndex = 0;
-
-        function selectAndPlay(element) {
-            // Find index of clicked track
-            trackItems.forEach(function(item, index) {
-                if (item === element) {
-                    currentTrackIndex = index;
-                }
-            });
-            playCurrentTrack();
-        }
-
-        function playCurrentTrack() {
-            var currentItem = trackItems[currentTrackIndex];
-            var url = currentItem.getAttribute('data-src');
-            var title = currentItem.getAttribute('data-title');
-
-            // Update Audio Source & Title
-            source.src = url;
-            titleDisplay.textContent = "Now Playing: " + title;
-
-            // Highlight Active Track
-            trackItems.forEach(function(item) {
-                item.classList.remove('active');
-            });
-            currentItem.classList.add('active');
-
-            // Reload & Play
-            player.load();
-            player.play();
-        }
-
-        // Auto-play next track when current track ends
-        player.onended = function() {
-            currentTrackIndex++;
-            if (currentTrackIndex < trackItems.length) {
-                playCurrentTrack();
-            } else {
-                // Restart from first track if at end of playlist
-                currentTrackIndex = 0;
-                playCurrentTrack();
-            }
-        };
-    </script>
+    <!-- Track 2: YouTube Embed -->
+    <div class="video-card">
+        <h3>Sample 2: Cultural Background Music</h3>
+        <div class="video-container">
+            <!-- Replace YOUTUBE_VIDEO_ID_2 with your actual YouTube ID -->
+            <iframe src="https://www.youtube.com/embed/YOUTUBE_VIDEO_ID_2" allowfullscreen></iframe>
+        </div>
+    </div>
 
 </body>
 </html>
