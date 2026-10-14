@@ -3,60 +3,132 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Log In - Kanglei Gallery</title>
+  <title>Login - Kanglei Gallery</title>
   <link rel="stylesheet" href="style.css">
   <style>
+    /* Base Container Styling */
     .auth-form-container {
-      max-width: 400px;
-      margin: 4rem auto;
-      background: white;
-      padding: 2.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      width: 90%;
+      max-width: 440px;
+      margin: 3rem auto;
+      background: #ffffff;
+      padding: 2.2rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      box-sizing: border-box;
     }
+
     .auth-form-container h2 {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.8rem;
       text-align: center;
       color: #1f2937;
+      font-size: 1.8rem;
+      font-weight: 700;
     }
+
     .form-group {
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.5rem;
     }
+
     .form-group label {
       display: block;
-      margin-bottom: 0.4rem;
-      font-weight: 500;
-      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: #374151;
     }
+
     .form-group input {
       width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font-size: 1rem;
+      padding: 0.9rem 1rem;
+      border: 1.5px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      box-sizing: border-box;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
+
     .submit-btn {
       width: 100%;
-      padding: 0.75rem;
+      padding: 1rem;
+      min-height: 52px;
       background-color: #4f46e5;
-      color: white;
+      color: #ffffff;
       border: none;
-      border-radius: 6px;
-      font-size: 1rem;
+      border-radius: 10px;
+      font-size: 1.2rem;
       font-weight: 600;
       cursor: pointer;
-      margin-top: 1rem;
+      margin-top: 1.2rem;
+      transition: background-color 0.2s ease, transform 0.1s ease;
     }
+
     .submit-btn:hover {
       background-color: #4338ca;
     }
+
+    .submit-btn:active {
+      transform: scale(0.98);
+    }
+
     .back-home {
       display: block;
       text-align: center;
-      margin-top: 1rem;
-      color: #6b7280;
+      margin-top: 1.5rem;
+      color: #4b5563;
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 1.05rem;
+      font-weight: 500;
+      padding: 0.5rem;
+    }
+
+    .back-home:hover {
+      color: #111827;
+      text-decoration: underline;
+    }
+
+    /* Mobile Enhancements for Phones */
+    @media (max-width: 600px) {
+      .auth-form-container {
+        width: 92%;
+        margin: 2rem auto;
+        padding: 2rem 1.5rem;
+        border-radius: 18px;
+      }
+
+      .auth-form-container h2 {
+        font-size: 2rem;
+        margin-bottom: 1.8rem;
+      }
+
+      .form-group label {
+        font-size: 1.15rem;
+        margin-bottom: 0.6rem;
+      }
+
+      .form-group input {
+        font-size: 1.15rem;
+        padding: 1rem 1.1rem;
+        border-radius: 12px;
+      }
+
+      .submit-btn {
+        font-size: 1.25rem;
+        padding: 1.1rem;
+        border-radius: 12px;
+        min-height: 56px;
+      }
+
+      .back-home {
+        font-size: 1.1rem;
+        margin-top: 1.8rem;
+      }
     }
   </style>
 </head>
@@ -66,12 +138,12 @@
     <h2>Welcome Back</h2>
     <form id="loginForm">
       <div class="form-group">
-        <label for="email">Email Address</label>
-        <input type="email" id="email" required placeholder="user@example.com">
+        <label for="loginEmail">Email Address</label>
+        <input type="email" id="loginEmail" required placeholder="user@example.com" autocomplete="email">
       </div>
       <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" required placeholder="••••••••">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
       </div>
       <button type="submit" class="submit-btn">Log In</button>
     </form>
