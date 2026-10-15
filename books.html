@@ -3,132 +3,350 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kanglei Art Gallery - Books</title>
+    <title>Kanglei Books Gallery - Mobile Reader</title>
+    <!-- PDF.js library for Canvas PDF Rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
+        :root {
+            --teal-bg: #009688;
+            --card-bg: #ffffff;
+            --accent-red: #8b0000;
+            --text-dark: #333333;
+        }
+
+        /* Disable user text selection to discourage copying */
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #009688; /* Teal background matching your theme */
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: var(--teal-bg);
             margin: 0;
-            padding: 20px;
+            padding: 15px;
+            box-sizing: border-box;
+            color: var(--text-dark);
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        /* Big Header Styling */
         .main-header {
             text-align: center;
             color: #ffffff;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: bold;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             letter-spacing: 2px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        /* Book Card Style */
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Sidebar Book List */
+        .book-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
         .book-card {
-            background: #ffffff;
+            background: var(--card-bg);
             border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s ease, border 0.2s ease;
+            border: 2px solid transparent;
             display: flex;
             align-items: center;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.2s, border 0.2s;
-            border: 2px solid transparent;
         }
 
         .book-card:hover {
             transform: translateY(-2px);
         }
 
-        /* Thumbnail / Cover placeholder */
-        .book-thumb {
-            width: 80px;
-            height: 110px;
-            object-fit: cover;
-            border-radius: 4px;
-            margin-right: 20px;
-            background-color: #ddd;
+        .book-card.active {
+            border: 2px solid var(--accent-red);
+            background-color: #fffafaf1;
+        }
+
+        .book-icon {
+            font-size: 32px;
+            margin-right: 15px;
+        }
+
+        .book-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--accent-red);
+            margin-bottom: 4px;
+        }
+
+        .book-meta {
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* PDF Canvas Reader Container */
+        .reader-container {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 500px;
+        }
+
+        .reader-toolbar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .active-book-heading {
+            font-weight: bold;
+            color: var(--accent-red);
+            font-size: 16px;
+        }
+
+        .nav-controls {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: #666;
-            text-align: center;
-            font-weight: bold;
+            gap: 10px;
         }
 
-        /* Details layout */
-        .book-details {
-            flex-grow: 1;
-        }
-
-        .book-info {
-            display: grid;
-            grid-template-columns: 70px 15px 1fr;
-            font-size: 15px;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        .label {
-            font-weight: bold;
-        }
-
-        /* Read PDF Button */
-        .read-btn {
-            display: inline-block;
-            margin-top: 10px;
-            background-color: #8b0000;
+        .btn {
+            background-color: var(--accent-red);
             color: white;
+            border: none;
             padding: 8px 16px;
-            text-decoration: none;
             border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 14px;
+        }
+
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .btn:hover:not(:disabled) {
+            background-color: #a00000;
+        }
+
+        .page-info {
             font-size: 14px;
             font-weight: bold;
-            transition: background 0.2s;
         }
 
-        .read-btn:hover {
-            background-color: #a00000;
+        /* Canvas Wrapper to prevent right clicks */
+        .canvas-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+            position: relative;
+            background: #525659;
+            padding: 15px 0;
+            border-radius: 6px;
+        }
+
+        canvas {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            max-width: 100%;
+            height: auto !important;
+        }
+
+        .loading-text {
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 40px 0;
+        }
+
+        /* Mobile Breakpoint */
+        @media (max-width: 800px) {
+            .layout-grid {
+                grid-template-columns: 1fr;
+            }
+            .reader-toolbar {
+                justify-content: center;
+            }
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
-    <div class="container">
-        <!-- Big Heading -->
-        <div class="main-header">KANGLEI BOOKS GALLERY</div>
+    <div class="main-header">KANGLEI BOOKS GALLERY</div>
 
-        <!-- Book 1: Dharmam -->
-        <div class="book-card">
-            <div class="book-thumb">PDF Cover</div>
-            <div class="book-details">
-                <div class="book-info"><span class="label">Title</span><span>:</span><span>Dharmam</span></div>
-                <div class="book-info"><span class="label">Category</span><span>:</span><span>Story / Literature</span></div>
+    <div class="layout-grid">
+        <!-- Book Selection Sidebar -->
+        <div class="book-sidebar">
+            <!-- Book 1 -->
+            <div class="book-card active" onclick="loadPDF('story/dharmam.pdf', 'Dharmam', this)">
+                <div class="book-icon">📖</div>
                 <div>
-                    <a href="story/dharmam.pdf" class="read-btn" target="_blank">📖 Read / Open PDF</a>
+                    <div class="book-title">Dharmam</div>
+                    <div class="book-meta">Category: Literature</div>
+                </div>
+            </div>
+
+            <!-- Book 2 -->
+            <div class="book-card" onclick="loadPDF('story/thajadba.pdf', 'Thajadba', this)">
+                <div class="book-icon">📘</div>
+                <div>
+                    <div class="book-title">Thajadba</div>
+                    <div class="book-meta">Category: Literature</div>
                 </div>
             </div>
         </div>
 
-        <!-- Book 2: Thajadba -->
-        <div class="book-card">
-            <div class="book-thumb">PDF Cover</div>
-            <div class="book-details">
-                <div class="book-info"><span class="label">Title</span><span>:</span><span>Thajadba</span></div>
-                <div class="book-info"><span class="label">Category</span><span>:</span><span>Story / Literature</span></div>
-                <div>
-                    <a href="story/thajadba.pdf" class="read-btn" target="_blank">📖 Read / Open PDF</a>
+        <!-- Embedded Canvas Reader -->
+        <div class="reader-container">
+            <div class="reader-toolbar">
+                <div class="active-book-heading" id="bookTitleDisplay">Dharmam</div>
+                <div class="nav-controls">
+                    <button class="btn" id="prevBtn" onclick="onPrevPage()">◀ Prev</button>
+                    <span class="page-info">Page <span id="pageNum">1</span> / <span id="pageCount">-</span></span>
+                    <button class="btn" id="nextBtn" onclick="onNextPage()">Next ▶</button>
                 </div>
             </div>
-        </div>
 
+            <!-- Canvas Element Rendering PDF Directly -->
+            <div class="canvas-wrapper">
+                <div id="loadingMessage" class="loading-text">Loading Book...</div>
+                <canvas id="pdfCanvas" style="display: none;"></canvas>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // Specify worker path for PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+        let pdfDoc = null,
+            pageNum = 1,
+            pageRendering = false,
+            pageNumPending = null,
+            scale = 1.5,
+            canvas = document.getElementById('pdfCanvas'),
+            ctx = canvas.getContext('2d'),
+            loadingMessage = document.getElementById('loadingMessage');
+
+        /**
+         * Render a given page number onto the HTML5 Canvas
+         */
+        function renderPage(num) {
+            pageRendering = true;
+            pdfDoc.getPage(num).then(function(page) {
+                let viewport = page.getViewport({ scale: scale });
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                let renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+
+                let renderTask = page.render(renderContext);
+
+                renderTask.promise.then(function() {
+                    pageRendering = false;
+                    loadingMessage.style.display = 'none';
+                    canvas.style.display = 'block';
+
+                    if (pageNumPending !== null) {
+                        renderPage(pageNumPending);
+                        pageNumPending = null;
+                    }
+                });
+            });
+
+            document.getElementById('pageNum').textContent = num;
+            updateButtonStates();
+        }
+
+        /**
+         * Queue page rendering if previous page is still rendering
+         */
+        function queueRenderPage(num) {
+            if (pageRendering) {
+                pageNumPending = num;
+            } else {
+                renderPage(num);
+            }
+        }
+
+        function onPrevPage() {
+            if (pageNum <= 1) return;
+            pageNum--;
+            queueRenderPage(pageNum);
+        }
+
+        function onNextPage() {
+            if (pageNum >= pdfDoc.numPages) return;
+            pageNum++;
+            queueRenderPage(pageNum);
+        }
+
+        function updateButtonStates() {
+            document.getElementById('prevBtn').disabled = pageNum <= 1;
+            document.getElementById('nextBtn').disabled = pageNum >= (pdfDoc ? pdfDoc.numPages : 1);
+        }
+
+        /**
+         * Load and initialize selected PDF file
+         */
+        function loadPDF(url, title, element) {
+            // Update Title Display & Active Card Highlight
+            document.getElementById('bookTitleDisplay').textContent = title;
+            let cards = document.querySelectorAll('.book-card');
+            cards.forEach(card => card.classList.remove('active'));
+            if(element) element.classList.add('active');
+
+            // Reset Canvas and Show Loading state
+            canvas.style.display = 'none';
+            loadingMessage.style.display = 'block';
+            loadingMessage.textContent = 'Loading ' + title + '...';
+
+            pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
+                pdfDoc = pdfDoc_;
+                document.getElementById('pageCount').textContent = pdfDoc.numPages;
+                pageNum = 1;
+                renderPage(pageNum);
+            }).catch(function(error) {
+                console.error("Error loading PDF: ", error);
+                loadingMessage.textContent = "Unable to load PDF file. Please ensure 'story/dharmam.pdf' exists.";
+            });
+        }
+
+        // Disable Context Menu (Right Click) globally to protect viewer
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // Load Default PDF on page load
+        window.onload = function() {
+            loadPDF('story/dharmam.pdf', 'Dharmam', document.querySelector('.book-card.active'));
+        };
+    </script>
 
 </body>
 </html>
