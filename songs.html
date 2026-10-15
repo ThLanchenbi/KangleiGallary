@@ -10,7 +10,6 @@
             background-color: #009688; /* Teal background matching your theme */
             margin: 0;
             padding: 20px;
-            padding-bottom: 120px; /* Space for bottom player */
         }
 
         .container {
@@ -24,9 +23,41 @@
             color: #ffffff;
             font-size: 32px;
             font-weight: bold;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             letter-spacing: 2px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Main On-Page YouTube Player Box */
+        .player-container {
+            background: #000000;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .now-playing-title {
+            background: #ffffff;
+            padding: 12px 15px;
+            font-weight: bold;
+            color: #8b0000;
+            font-size: 16px;
         }
 
         /* Song Card Style */
@@ -36,7 +67,7 @@
             display: flex;
             align-items: center;
             padding: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             cursor: pointer;
             transition: transform 0.2s, border 0.2s;
@@ -49,9 +80,10 @@
 
         .song-card.active {
             border: 2px solid #8b0000;
+            background-color: #fff9f9;
         }
 
-        /* Thumbnail */
+        /* Thumbnail (Half Size) */
         .song-thumb {
             width: 90px;
             height: 90px;
@@ -77,46 +109,6 @@
         .label {
             font-weight: bold;
         }
-
-        .yt-link {
-            font-size: 13px;
-            color: #0066cc;
-            text-decoration: none;
-            margin-top: 5px;
-            display: inline-block;
-        }
-
-        .yt-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Persistent Bottom Player Bar */
-        .player-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: #ffffff;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
-            padding: 12px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-sizing: border-box;
-            z-index: 1000;
-        }
-
-        .now-playing {
-            font-size: 14px;
-            font-weight: bold;
-            color: #8b0000;
-            margin-bottom: 6px;
-        }
-
-        audio {
-            width: 100%;
-            max-width: 600px;
-        }
     </style>
 </head>
 <body>
@@ -125,70 +117,58 @@
         <!-- Big Heading -->
         <div class="main-header">KANGLEI ART GALLERY</div>
 
+        <!-- Main YouTube Player (Plays on the page) -->
+        <div class="player-container">
+            <div class="video-wrapper">
+                <iframe id="youtubePlayer" src="https://www.youtube.com/embed/R6b4gahskfI" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+            <div class="now-playing-title" id="playerTitle">Now Playing: Matam amagi chanabi (T. Robindro)</div>
+        </div>
+
         <!-- Song 1 -->
-        <div class="song-card active" onclick="playSong('https://files.catbox.moe/fmnehf.mp3', 'Matam amagi chanabi', 'T. Robindro', this)">
+        <div class="song-card active" onclick="loadVideo('R6b4gahskfI', 'Matam amagi chanabi', 'T. Robindro', this)">
             <img src="https://via.placeholder.com/180" alt="Thumbnail" class="song-thumb">
             <div class="song-details">
                 <div class="song-info"><span class="label">Title</span><span>:</span><span>Matam amagi chanabi</span></div>
                 <div class="song-info"><span class="label">Singer</span><span>:</span><span>T. Robindro</span></div>
                 <div class="song-info"><span class="label">Lyrics</span><span>:</span><span>T. Manao</span></div>
-                <!-- YouTube Video Link (Change this URL anytime) -->
-                <div><a href="https://youtu.be/R6b4gahskfI" class="yt-link" target="_blank" onclick="event.stopPropagation();">▶ Watch Video Link: https://youtu.be/R6b4gahskfI</a></div>
             </div>
         </div>
 
-        <!-- Song 2 -->
-        <div class="song-card" onclick="playSong('YOUR_SECOND_CATBOX_LINK.mp3', 'Nangbu Nungshi', 'R.K. Suresh', this)">
+        <!-- Song 2 (Replace R6b4gahskfI with your other YouTube Video IDs) -->
+        <div class="song-card" onclick="loadVideo('R6b4gahskfI', 'Nangbu Nungshi', 'R.K. Suresh', this)">
             <img src="https://via.placeholder.com/180" alt="Thumbnail" class="song-thumb">
             <div class="song-details">
                 <div class="song-info"><span class="label">Title</span><span>:</span><span>Nangbu Nungshi</span></div>
                 <div class="song-info"><span class="label">Singer</span><span>:</span><span>R.K. Suresh</span></div>
                 <div class="song-info"><span class="label">Lyrics</span><span>:</span><span>M. Sanatomba</span></div>
-                <!-- YouTube Video Link (Change this URL anytime) -->
-                <div><a href="https://youtu.be/R6b4gahskfI" class="yt-link" target="_blank" onclick="event.stopPropagation();">▶ Watch Video Link: https://youtu.be/R6b4gahskfI</a></div>
             </div>
         </div>
 
         <!-- Song 3 -->
-        <div class="song-card" onclick="playSong('YOUR_THIRD_CATBOX_LINK.mp3', 'Thawai Oiriba', 'L. Bidyalaxmi', this)">
+        <div class="song-card" onclick="loadVideo('R6b4gahskfI', 'Thawai Oiriba', 'L. Bidyalaxmi', this)">
             <img src="https://via.placeholder.com/180" alt="Thumbnail" class="song-thumb">
             <div class="song-details">
                 <div class="song-info"><span class="label">Title</span><span>:</span><span>Thawai Oiriba</span></div>
                 <div class="song-info"><span class="label">Singer</span><span>:</span><span>L. Bidyalaxmi</span></div>
                 <div class="song-info"><span class="label">Lyrics</span><span>:</span><span>K. Hemanta</span></div>
-                <!-- YouTube Video Link (Change this URL anytime) -->
-                <div><a href="https://youtu.be/R6b4gahskfI" class="yt-link" target="_blank" onclick="event.stopPropagation();">▶ Watch Video Link: https://youtu.be/R6b4gahskfI</a></div>
             </div>
         </div>
     </div>
 
-    <!-- Bottom Audio Player Bar -->
-    <div class="player-bar">
-        <div class="now-playing" id="nowPlaying">Now Playing: Matam amagi chanabi</div>
-        <audio id="audioPlayer" controls>
-            <source id="audioSource" src="https://files.catbox.moe/fmnehf.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-    </div>
-
     <script>
-        function playSong(url, title, singer, element) {
-            var player = document.getElementById('audioPlayer');
-            var source = document.getElementById('audioSource');
-            var nowPlaying = document.getElementById('nowPlaying');
+        function loadVideo(videoId, title, singer, element) {
+            var iframe = document.getElementById('youtubePlayer');
+            var titleBar = document.getElementById('playerTitle');
             var cards = document.querySelectorAll('.song-card');
 
-            // Update source and title
-            source.src = url;
-            nowPlaying.textContent = "Now Playing: " + title + " (" + singer + ")";
+            // Load the clicked video into the on-page player and auto-play it
+            iframe.src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1";
+            titleBar.textContent = "Now Playing: " + title + " (" + singer + ")";
 
             // Highlight active card
             cards.forEach(card => card.classList.remove('active'));
             element.classList.add('active');
-
-            // Play track
-            player.load();
-            player.play().catch(error => console.log("Playback prevented:", error));
         }
     </script>
 
