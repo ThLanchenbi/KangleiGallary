@@ -3,414 +3,404 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kanglei Books Gallery - Mobile Reader</title>
-    <!-- PDF.js library for Canvas PDF Rendering -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <title>Books Gallery - Kanglei Gallery</title>
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        :root {
-            --teal-bg: #009688;
-            --card-bg: #ffffff;
-            --accent-red: #8b0000;
-            --text-dark: #333333;
-        }
-
-        /* Disable user text selection to discourage copying */
         * {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         body {
-            font-family: 'Inter', Arial, sans-serif;
-            background-color: var(--teal-bg);
-            margin: 0;
-            padding: 15px;
-            box-sizing: border-box;
-            color: var(--text-dark);
-        }
-
-        .main-header {
-            text-align: center;
-            color: #ffffff;
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .layout-grid {
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Sidebar Book List */
-        .book-sidebar {
+            /* Vibrant Emerald Green matching video.html */
+            background-color: #00A86B;
+            min-height: 100vh;
+            padding: 40px 20px 0 20px;
+            color: #1a1a1a;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Header Styling */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        header p {
+            font-size: 1.05rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Search Controls */
+        .controls-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 48px 14px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            font-size: 1rem;
+            outline: none;
+            background: rgba(255, 255, 255, 0.98);
+            color: #1a1a1a;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+        }
+
+        .search-box input:focus {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+            transform: translateY(-1px);
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Book Cards List */
+        .book-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            padding-bottom: 40px;
         }
 
         .book-card {
-            background: var(--card-bg);
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: transform 0.2s ease, border 0.2s ease;
-            border: 2px solid transparent;
+            background-color: rgba(255, 255, 255, 0.96);
+            border-radius: 12px;
+            padding: 22px;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
+            gap: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .book-card:hover {
             transform: translateY(-2px);
-        }
-
-        .book-card.active {
-            border: 2px solid var(--accent-red);
-            background-color: #fffafaf1;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
 
         .book-icon {
-            font-size: 32px;
-            margin-right: 15px;
+            width: 130px;
+            height: 130px;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #00A86B;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.2rem;
+            flex-shrink: 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
         }
 
-        .book-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: var(--accent-red);
-            margin-bottom: 4px;
-        }
-
-        .book-meta {
-            font-size: 13px;
-            color: #666;
-        }
-
-        /* PDF Canvas Reader Container */
-        .reader-container {
-            background: var(--card-bg);
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        .book-info {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            min-height: 500px;
-        }
-
-        .reader-toolbar {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 12px;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #eee;
-            flex-wrap: wrap;
             gap: 10px;
+            font-size: 1.15rem;
+            color: #000000;
+            padding-top: 2px;
+            flex: 1;
         }
 
-        .active-book-heading {
-            font-weight: bold;
-            color: var(--accent-red);
-            font-size: 16px;
-        }
-
-        .nav-controls {
+        .info-row {
             display: flex;
+            align-items: baseline;
+        }
+
+        .label {
+            font-weight: 800;
+            width: 110px;
+            flex-shrink: 0;
+            color: #111827;
+        }
+
+        .colon {
+            margin-right: 12px;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .value {
+            font-weight: 700;
+            color: #000000;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        .value:hover {
+            color: #007a4d;
+        }
+
+        .value-desc {
+            font-weight: 500;
+            color: #374151;
+            line-height: 1.5;
+            font-size: 1.05rem;
+        }
+
+        .btn-read {
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .btn {
-            background-color: var(--accent-red);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-            font-size: 14px;
-        }
-
-        .btn:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-
-        .btn:hover:not(:disabled) {
-            background-color: #a00000;
-        }
-
-        .page-info {
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        /* Canvas Wrapper to prevent right clicks */
-        .canvas-wrapper {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            overflow-x: auto;
-            position: relative;
-            background: #525659;
-            padding: 15px 0;
-            border-radius: 6px;
-        }
-
-        canvas {
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            max-width: 100%;
-            height: auto !important;
-        }
-
-        .loading-text {
+            gap: 8px;
+            background-color: #00A86B;
             color: #ffffff;
-            font-weight: bold;
-            font-size: 16px;
-            margin: 40px 0;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-decoration: none;
+            margin-top: 6px;
+            align-self: flex-start;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 2px 8px rgba(0,168,107,0.3);
         }
 
-        /* Mobile Breakpoint */
-        @media (max-width: 800px) {
-            .layout-grid {
-                grid-template-columns: 1fr;
+        .btn-read:hover {
+            background-color: #008f5a;
+            transform: translateY(-1px);
+        }
+
+        .no-results {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            color: #4b5563;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            background-color: rgba(255, 255, 255, 0.98);
+            border-top: 1px solid rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-around;
+            padding: 16px;
+            position: sticky;
+            bottom: 0;
+            margin: 0 -20px;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            z-index: 50;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #00A86B;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #007a4d;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 24px 12px 0 12px;
             }
-            .reader-toolbar {
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .book-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .book-icon {
+                width: 100%;
+                height: 100px;
+            }
+
+            .info-row {
+                font-size: 1rem;
+            }
+
+            .label {
+                width: 80px;
+            }
+
+            .value {
+                font-size: 1.05rem;
+            }
+
+            .btn-read {
+                width: 100%;
                 justify-content: center;
+            }
+            
+            .bottom-nav {
+                margin: 0 -12px;
             }
         }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
-    <div class="main-header">KANGLEI BOOKS GALLERY</div>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>KANGLEI ART GALLERY - BOOK GALLERY</h1>
+            <p>Discover classical and contemporary literary works from our SHORT STORIES collection.</p>
+        </header>
 
-    <div class="layout-grid">
-        <!-- Book Selection Sidebar -->
-        <div class="book-sidebar">
-            <!-- Book 1 -->
-            <div class="book-card active" onclick="loadPDF('story/dharmam.pdf', 'Dharmam', this)">
-                <div class="book-icon">📖</div>
-                <div>
-                    <div class="book-title">Dharmam</div>
-                    <div class="book-meta">Category: Literature</div>
-                </div>
-            </div>
-
-            <!-- Book 2 -->
-            <div class="book-card" onclick="loadPDF('story/thajadba.pdf', 'Thajadba', this)">
-                <div class="book-icon">📘</div>
-                <div>
-                    <div class="book-title">Thajadba Meekupsida</div>
-                    <div class="book-meta">Category: Literature</div>
-                </div>
-            </div>
-            <!-- Book 3 -->
-            <div class="book-card" onclick="loadPDF('story/thajadba.pdf', 'MEEGI SAMAJ', this)">
-                <div class="book-icon">📘</div>
-                <div>
-                    <div class="book-title">Meegi Samaj</div>
-                    <div class="book-meta">Category: Literature</div>
-                </div>
-            </div>
-            <!-- Book 4 -->
-            <div class="book-card" onclick="loadPDF('story/thajadba.pdf', 'MEEKUPSIGIDAMAK', this)">
-                <div class="book-icon">📘</div>
-                <div>
-                    <div class="book-title">Meekupsitgi Asada</div>
-                    <div class="book-meta">Category: Literature</div>
-                </div>
-            </div>
-            <!-- Book 5 -->
-            <div class="book-card" onclick="loadPDF('story/thajadba.pdf', 'CHITRAKAR', this)">
-                <div class="book-icon">📘</div>
-                <div>
-                    <div class="book-title">Chitrakar</div>
-                    <div class="book-meta">Category: Literature</div>
-                </div>
-            </div>
-<!-- Book 6 -->
-            <div class="book-card" onclick="loadPDF('story/thajadba.pdf', 'Thajadba', this)">
-                <div class="book-icon">📘</div>
-                <div>
-                    <div class="book-title">Thajadba</div>
-                    <div class="book-meta">Category: Literature</div>
-                </div>
-            </div>
-            <!-- Book 7 -->
-            <div class="book-card" onclick="loadPDF('story/thajadba.pdf', 'Thajadba', this)">
-                <div class="book-icon">📘</div>
-                <div>
-                    <div class="book-title">Thajadba</div>
-                    <div class="book-meta">Category: Literature</div>
-                </div>
-            </div>
-<!-- Book 8 -->
-            <div class="book-card" onclick="loadPDF('story/thajadba.pdf', 'Thajadba', this)">
-                <div class="book-icon">📘</div>
-                <div>
-                    <div class="book-title">Thajadba</div>
-                    <div class="book-meta">Category: Literature</div>
-                </div>
-            </div>
-            <!-- Book 9 -->
-            <div class="book-card" onclick="loadPDF('story/thajadba.pdf', 'Thajadba', this)">
-                <div class="book-icon">📘</div>
-                <div>
-                    <div class="book-title">Thajadba</div>
-                    <div class="book-meta">Category: Literature</div>
-                </div>
-            </div>
-<!-- Book 10 -->
-            <div class="book-card" onclick="loadPDF('story/thajadba.pdf', 'Thajadba', this)">
-                <div class="book-icon">📘</div>
-                <div>
-                    <div class="book-title">Thajadba</div>
-                    <div class="book-meta">Category: Literature</div>
-                </div>
+        <!-- Search Control -->
+        <div class="controls-bar">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search books by title or description..." onkeyup="filterBooks()">
+                <i class="fa-solid fa-magnifying-glass"></i>
             </div>
         </div>
 
-        <!-- Embedded Canvas Reader -->
-        <div class="reader-container">
-            <div class="reader-toolbar">
-                <div class="active-book-heading" id="bookTitleDisplay">Dharmam</div>
-                <div class="nav-controls">
-                    <button class="btn" id="prevBtn" onclick="onPrevPage()">◀ Prev</button>
-                    <span class="page-info">Page <span id="pageNum">1</span> / <span id="pageCount">-</span></span>
-                    <button class="btn" id="nextBtn" onclick="onNextPage()">Next ▶</button>
-                </div>
-            </div>
-
-            <!-- Canvas Element Rendering PDF Directly -->
-            <div class="canvas-wrapper">
-                <div id="loadingMessage" class="loading-text">Loading Book...</div>
-                <canvas id="pdfCanvas" style="display: none;"></canvas>
-            </div>
+        <!-- Book Collection List -->
+        <div class="book-list" id="bookList">
+            <!-- Rendered dynamically via JavaScript -->
         </div>
     </div>
 
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav">
+        <a href="register.html" class="nav-link"><i class="fa-solid fa-user-plus"></i> Register</a>
+        <a href="login.html" class="nav-link"><i class="fa-solid fa-right-to-bracket"></i> Log In</a>
+        <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+    </div>
+
     <script>
-        // Specify worker path for PDF.js
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
-
-        let pdfDoc = null,
-            pageNum = 1,
-            pageRendering = false,
-            pageNumPending = null,
-            scale = 1.5,
-            canvas = document.getElementById('pdfCanvas'),
-            ctx = canvas.getContext('2d'),
-            loadingMessage = document.getElementById('loadingMessage');
-
-        /**
-         * Render a given page number onto the HTML5 Canvas
-         */
-        function renderPage(num) {
-            pageRendering = true;
-            pdfDoc.getPage(num).then(function(page) {
-                let viewport = page.getViewport({ scale: scale });
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-
-                let renderContext = {
-                    canvasContext: ctx,
-                    viewport: viewport
-                };
-
-                let renderTask = page.render(renderContext);
-
-                renderTask.promise.then(function() {
-                    pageRendering = false;
-                    loadingMessage.style.display = 'none';
-                    canvas.style.display = 'block';
-
-                    if (pageNumPending !== null) {
-                        renderPage(pageNumPending);
-                        pageNumPending = null;
-                    }
-                });
-            });
-
-            document.getElementById('pageNum').textContent = num;
-            updateButtonStates();
-        }
-
-        /**
-         * Queue page rendering if previous page is still rendering
-         */
-        function queueRenderPage(num) {
-            if (pageRendering) {
-                pageNumPending = num;
-            } else {
-                renderPage(num);
+        // Book database with direct PDF paths
+        const books = [
+            {
+                id: 1,
+                title: "Meetei Laining Ahanba",
+                description: "Meetei Laininglon Athuppa (Ahanba) - An insightful book exploring sacred teachings and history.",
+                pdfUrl: "laining1.pdf"
+            },
+            {
+                id: 2,
+                title: "THAJADABA MEEKUP AMADA",
+                description: "A love story of two teenaged collage boy and girl.",
+                pdfUrl: "thajadba.pdf"
+            },
+            {
+                id: 3,
+                title: "Wakhal Khudum Chanba",
+                description: "An insightful book exploring philosophical thoughts, life lessons, and deep reflection.",
+                pdfUrl: "wakhal_khudum_chanba.pdf"
+            },
+            {
+                id: 4,
+                title: "Nungaiba Thiba",
+                description: "A creative literary piece focused on the search for peace, joy, and spiritual fulfillment.",
+                pdfUrl: "nungaiba_thiba.pdf"
             }
-        }
+        ];
 
-        function onPrevPage() {
-            if (pageNum <= 1) return;
-            pageNum--;
-            queueRenderPage(pageNum);
-        }
+        // Render books to screen in the video layout format
+        function renderBooks(bookArray) {
+            const container = document.getElementById('bookList');
+            container.innerHTML = '';
 
-        function onNextPage() {
-            if (pageNum >= pdfDoc.numPages) return;
-            pageNum++;
-            queueRenderPage(pageNum);
-        }
+            if (bookArray.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <i class="fa-solid fa-book-open" style="font-size:2rem; margin-bottom:10px; color:#00A86B;"></i>
+                        <p>No books found matching your search.</p>
+                    </div>
+                `;
+                return;
+            }
 
-        function updateButtonStates() {
-            document.getElementById('prevBtn').disabled = pageNum <= 1;
-            document.getElementById('nextBtn').disabled = pageNum >= (pdfDoc ? pdfDoc.numPages : 1);
-        }
-
-        /**
-         * Load and initialize selected PDF file
-         */
-        function loadPDF(url, title, element) {
-            // Update Title Display & Active Card Highlight
-            document.getElementById('bookTitleDisplay').textContent = title;
-            let cards = document.querySelectorAll('.book-card');
-            cards.forEach(card => card.classList.remove('active'));
-            if(element) element.classList.add('active');
-
-            // Reset Canvas and Show Loading state
-            canvas.style.display = 'none';
-            loadingMessage.style.display = 'block';
-            loadingMessage.textContent = 'Loading ' + title + '...';
-
-            pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
-                pdfDoc = pdfDoc_;
-                document.getElementById('pageCount').textContent = pdfDoc.numPages;
-                pageNum = 1;
-                renderPage(pageNum);
-            }).catch(function(error) {
-                console.error("Error loading PDF: ", error);
-                loadingMessage.textContent = "Unable to load PDF file. Please ensure 'story/dharmam.pdf' exists.";
+            bookArray.forEach(book => {
+                const card = document.createElement('div');
+                card.className = 'book-card';
+                card.innerHTML = `
+                    <div class="book-icon">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </div>
+                    <div class="book-info">
+                        <div class="info-row">
+                            <span class="label">Title</span>
+                            <span class="colon">:</span>
+                            <a href="read.html?file=${encodeURIComponent(book.pdfUrl)}" class="value">${book.title}</a>
+                        </div>
+                        <div class="info-row" style="align-items: flex-start;">
+                            <span class="label">Details</span>
+                            <span class="colon">:</span>
+                            <span class="value-desc">${book.description}</span>
+                        </div>
+                        <a href="read.html?file=${encodeURIComponent(book.pdfUrl)}" class="btn-read">
+                            <i class="fa-solid fa-book-open"></i> Read Book
+                        </a>
+                    </div>
+                `;
+                container.appendChild(card);
             });
         }
 
-        // Disable Context Menu (Right Click) globally to protect viewer
-        document.addEventListener('contextmenu', event => event.preventDefault());
+        // Filter Books on search
+        function filterBooks() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = books.filter(b => 
+                b.title.toLowerCase().includes(query) || 
+                b.description.toLowerCase().includes(query)
+            );
+            renderBooks(filtered);
+        }
 
-        // Load Default PDF on page load
-        window.onload = function() {
-            loadPDF('story/dharmam.pdf', 'Dharmam', document.querySelector('.book-card.active'));
-        };
+        // Initial render on page load
+        renderBooks(books);
     </script>
-
 </body>
 </html>
