@@ -3,404 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Books Gallery - Kanglei Gallery</title>
-    <!-- FontAwesome Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Google Font Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <title>Kanglei Art Gallery - Books</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
         body {
-            /* Vibrant Emerald Green matching video.html */
-            background-color: #00A86B;
-            min-height: 100vh;
-            padding: 40px 20px 0 20px;
-            color: #1a1a1a;
-            display: flex;
-            flex-direction: column;
+            font-family: Arial, sans-serif;
+            background-color: #009688; /* Teal background matching your theme */
+            margin: 0;
+            padding: 20px;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
-            flex: 1;
-            width: 100%;
         }
 
-        /* Header Styling */
-        header {
+        /* Big Header Styling */
+        .main-header {
             text-align: center;
-            margin-bottom: 30px;
             color: #ffffff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
-        }
-
-        header h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-
-        header p {
-            font-size: 1.05rem;
-            opacity: 0.95;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.5;
-        }
-
-        /* Search Controls */
-        .controls-bar {
-            display: flex;
-            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
             margin-bottom: 30px;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
-        .search-box {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 14px 48px 14px 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            font-size: 1rem;
-            outline: none;
-            background: rgba(255, 255, 255, 0.98);
-            color: #1a1a1a;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: all 0.2s ease;
-        }
-
-        .search-box input:focus {
-            box-shadow: 0 6px 20px rgba(0,0,0,0.18);
-            transform: translateY(-1px);
-        }
-
-        .search-box i {
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        /* Book Cards List */
-        .book-list {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            padding-bottom: 40px;
-        }
-
+        /* Book Card Style */
         .book-card {
-            background-color: rgba(255, 255, 255, 0.96);
-            border-radius: 12px;
-            padding: 22px;
+            background: #ffffff;
+            border-radius: 8px;
             display: flex;
-            align-items: flex-start;
-            gap: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            backdrop-filter: blur(5px);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s, border 0.2s;
+            border: 2px solid transparent;
         }
 
         .book-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
 
-        .book-icon {
-            width: 130px;
-            height: 130px;
-            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-            color: #00A86B;
-            border-radius: 10px;
+        /* Thumbnail / Cover placeholder */
+        .book-thumb {
+            width: 80px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 20px;
+            background-color: #ddd;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3.2rem;
-            flex-shrink: 0;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Details layout */
+        .book-details {
+            flex-grow: 1;
         }
 
         .book-info {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            font-size: 1.15rem;
-            color: #000000;
-            padding-top: 2px;
-            flex: 1;
-        }
-
-        .info-row {
-            display: flex;
-            align-items: baseline;
+            display: grid;
+            grid-template-columns: 70px 15px 1fr;
+            font-size: 15px;
+            color: #333;
+            line-height: 1.6;
         }
 
         .label {
-            font-weight: 800;
-            width: 110px;
-            flex-shrink: 0;
-            color: #111827;
+            font-weight: bold;
         }
 
-        .colon {
-            margin-right: 12px;
-            font-weight: 800;
-            color: #111827;
-        }
-
-        .value {
-            font-weight: 700;
-            color: #000000;
+        /* Read PDF Button */
+        .read-btn {
+            display: inline-block;
+            margin-top: 10px;
+            background-color: #8b0000;
+            color: white;
+            padding: 8px 16px;
             text-decoration: none;
-            font-size: 1.2rem;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.2s;
         }
 
-        .value:hover {
-            color: #007a4d;
-        }
-
-        .value-desc {
-            font-weight: 500;
-            color: #374151;
-            line-height: 1.5;
-            font-size: 1.05rem;
-        }
-
-        .btn-read {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background-color: #00A86B;
-            color: #ffffff;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            text-decoration: none;
-            margin-top: 6px;
-            align-self: flex-start;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            box-shadow: 0 2px 8px rgba(0,168,107,0.3);
-        }
-
-        .btn-read:hover {
-            background-color: #008f5a;
-            transform: translateY(-1px);
-        }
-
-        .no-results {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            text-align: center;
-            color: #4b5563;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        /* Bottom Navigation Bar */
-        .bottom-nav {
-            background-color: rgba(255, 255, 255, 0.98);
-            border-top: 1px solid rgba(0,0,0,0.08);
-            display: flex;
-            justify-content: space-around;
-            padding: 16px;
-            position: sticky;
-            bottom: 0;
-            margin: 0 -20px;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            z-index: 50;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: #00A86B;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1rem;
-            transition: color 0.2s;
-        }
-
-        .nav-link:hover {
-            color: #007a4d;
-        }
-
-        @media (max-width: 640px) {
-            body {
-                padding: 24px 12px 0 12px;
-            }
-
-            header h1 {
-                font-size: 1.5rem;
-            }
-
-            .book-card {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 16px;
-            }
-
-            .book-icon {
-                width: 100%;
-                height: 100px;
-            }
-
-            .info-row {
-                font-size: 1rem;
-            }
-
-            .label {
-                width: 80px;
-            }
-
-            .value {
-                font-size: 1.05rem;
-            }
-
-            .btn-read {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .bottom-nav {
-                margin: 0 -12px;
-            }
+        .read-btn:hover {
+            background-color: #a00000;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Header -->
-        <header>
-            <h1>KANGLEI ART GALLERY - BOOKS GALLERY</h1>
-            <p>Discover classical and contemporary literary works from our featured book collection.</p>
-        </header>
+        <!-- Big Heading -->
+        <div class="main-header">KANGLEI BOOKS GALLERY</div>
 
-        <!-- Search Control -->
-        <div class="controls-bar">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search books by title or description..." onkeyup="filterBooks()">
-                <i class="fa-solid fa-magnifying-glass"></i>
+        <!-- Book 1: Dharmam -->
+        <div class="book-card">
+            <div class="book-thumb">PDF Cover</div>
+            <div class="book-details">
+                <div class="book-info"><span class="label">Title</span><span>:</span><span>Dharmam</span></div>
+                <div class="book-info"><span class="label">Category</span><span>:</span><span>Story / Literature</span></div>
+                <div>
+                    <a href="story/dharmam.pdf" class="read-btn" target="_blank">📖 Read / Open PDF</a>
+                </div>
             </div>
         </div>
 
-        <!-- Book Collection List -->
-        <div class="book-list" id="bookList">
-            <!-- Rendered dynamically via JavaScript -->
+        <!-- Book 2: Thajadba -->
+        <div class="book-card">
+            <div class="book-thumb">PDF Cover</div>
+            <div class="book-details">
+                <div class="book-info"><span class="label">Title</span><span>:</span><span>Thajadba</span></div>
+                <div class="book-info"><span class="label">Category</span><span>:</span><span>Story / Literature</span></div>
+                <div>
+                    <a href="story/thajadba.pdf" class="read-btn" target="_blank">📖 Read / Open PDF</a>
+                </div>
+            </div>
         </div>
+
     </div>
 
-    <!-- Bottom Navigation Bar -->
-    <div class="bottom-nav">
-        <a href="register.html" class="nav-link"><i class="fa-solid fa-user-plus"></i> Register</a>
-        <a href="login.html" class="nav-link"><i class="fa-solid fa-right-to-bracket"></i> Log In</a>
-        <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
-    </div>
-
-    <script>
-        // Book database with direct PDF paths
-        const books = [
-            {
-                id: 1,
-                title: "Meetei Laining Ahanba",
-                description: "Meetei Laininglon Ahoupa (Ahanba) - An insightful book exploring sacred teachings and history.",
-                pdfUrl: "laining1.pdf"
-            },
-            {
-                id: 2,
-                title: "Angangi Wari Macha",
-                description: "A collection of delightful short stories and folk tales meant for children and young readers.",
-                pdfUrl: "story/dharmam.pdf"
-            },
-            {
-                id: 3,
-                title: "Wakhal Khudum Chanba",
-                description: "An insightful book exploring philosophical thoughts, life lessons, and deep reflection.",
-                pdfUrl: "story/thajadba.pdf"
-            },
-            {
-                id: 4,
-                title: "Nungaiba Thiba",
-                description: "A creative literary piece focused on the search for peace, joy, and spiritual fulfillment.",
-                pdfUrl: "nungaiba_thiba.pdf"
-            }
-        ];
-
-        // Render books to screen in the video layout format
-        function renderBooks(bookArray) {
-            const container = document.getElementById('bookList');
-            container.innerHTML = '';
-
-            if (bookArray.length === 0) {
-                container.innerHTML = `
-                    <div class="no-results">
-                        <i class="fa-solid fa-book-open" style="font-size:2rem; margin-bottom:10px; color:#00A86B;"></i>
-                        <p>No books found matching your search.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            bookArray.forEach(book => {
-                const card = document.createElement('div');
-                card.className = 'book-card';
-                card.innerHTML = `
-                    <div class="book-icon">
-                        <i class="fa-solid fa-file-pdf"></i>
-                    </div>
-                    <div class="book-info">
-                        <div class="info-row">
-                            <span class="label">Title</span>
-                            <span class="colon">:</span>
-                            <a href="read.html?file=${encodeURIComponent(book.pdfUrl)}" class="value">${book.title}</a>
-                        </div>
-                        <div class="info-row" style="align-items: flex-start;">
-                            <span class="label">Details</span>
-                            <span class="colon">:</span>
-                            <span class="value-desc">${book.description}</span>
-                        </div>
-                        <a href="read.html?file=${encodeURIComponent(book.pdfUrl)}" class="btn-read">
-                            <i class="fa-solid fa-book-open"></i> Read Book
-                        </a>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // Filter Books on search
-        function filterBooks() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = books.filter(b => 
-                b.title.toLowerCase().includes(query) || 
-                b.description.toLowerCase().includes(query)
-            );
-            renderBooks(filtered);
-        }
-
-        // Initial render on page load
-        renderBooks(books);
-    </script>
 </body>
 </html>
