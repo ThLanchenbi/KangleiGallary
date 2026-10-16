@@ -132,9 +132,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3.2rem;
+            overflow: hidden;
             flex-shrink: 0;
             box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .book-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .book-info {
@@ -262,7 +268,7 @@
 
             .book-icon {
                 width: 100%;
-                height: 100px;
+                height: 160px;
             }
 
             .info-row {
@@ -319,31 +325,35 @@
     </div>
 
     <script>
-        // Book database with direct PDF paths
+        // Book database with direct PDF paths and individual thumbnail images
         const books = [
             {
                 id: 1,
                 title: "Meetei Laining Ahanba",
                 description: "Meetei Laininglon Athuppa (Ahanba) - An insightful book exploring sacred teachings and history.",
-                pdfUrl: "laining1.pdf"
+                pdfUrl: "laining1.pdf",
+                imageUrl: "photo/meeteilaining.png"
             },
             {
                 id: 2,
                 title: "THAJADABA MEEKUP AMADA",
                 description: "A love story of two teenaged collage boy and girl.",
-                pdfUrl: "thajadba.pdf"
+                pdfUrl: "thajadba.pdf",
+                imageUrl: "photo/meeteilaining.png" // Replace with unique thumbnail if available
             },
             {
                 id: 3,
                 title: "Wakhal Khudum Chanba",
                 description: "An insightful book exploring philosophical thoughts, life lessons, and deep reflection.",
-                pdfUrl: "wakhal_khudum_chanba.pdf"
+                pdfUrl: "wakhal_khudum_chanba.pdf",
+                imageUrl: "photo/meeteilaining.png" // Replace with unique thumbnail if available
             },
             {
                 id: 4,
                 title: "Nungaiba Thiba",
                 description: "A creative literary piece focused on the search for peace, joy, and spiritual fulfillment.",
-                pdfUrl: "nungaiba_thiba.pdf"
+                pdfUrl: "nungaiba_thiba.pdf",
+                imageUrl: "photo/meeteilaining.png" // Replace with unique thumbnail if available
             }
         ];
 
@@ -367,7 +377,7 @@
                 card.className = 'book-card';
                 card.innerHTML = `
                     <div class="book-icon">
-                        <i class="fa-solid fa-file-pdf"></i>
+                        <img src="${book.imageUrl}" alt="${book.title}">
                     </div>
                     <div class="book-info">
                         <div class="info-row">
