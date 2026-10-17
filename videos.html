@@ -3,213 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KANGLEI ART GALLERY - Video Gallery</title>
+    <title>Kanglei Art Gallery - YouTube Style Player</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        :root {
+            --teal-bg: #009688;
+            --card-bg: #ffffff;
+            --accent-red: #8b0000;
+            --text-dark: #333333;
         }
 
         body {
-            /* Background color matching the green swatch in your image */
-            background-color: #00A86B;
-            min-height: 100vh;
-            padding: 40px 20px;
-            color: #1a1a1a;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        /* Header Styling */
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            color: #ffffff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
-        }
-
-        header h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-
-        header p {
-            font-size: 1.05rem;
-            opacity: 0.95;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.5;
-        }
-
-        /* Video List Layout */
-        .video-list {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        /* Single Video Item Container */
-        .video-card {
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 8px;
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: var(--teal-bg);
+            margin: 0;
             padding: 20px;
-            display: flex;
-            align-items: flex-start;
-            gap: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            backdrop-filter: blur(5px);
+            box-sizing: border-box;
         }
 
-        /* Thumbnail Image */
-        .thumbnail {
-            width: 140px;
-            height: 140px;
-            object-fit: cover;
-            border-radius: 4px;
-            flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        .main-header {
+            text-align: center;
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        /* Metadata Details */
-        .video-info {
+        /* YouTube Two-Column Watch Layout */
+        .watch-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* Left Side: Main Video Player & Info */
+        .primary-player-section {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            font-size: 1.25rem;
-            color: #000000;
-            padding-top: 5px;
         }
 
-        .info-row {
-            display: flex;
-            align-items: baseline;
+        .player-container {
+            background: #000000;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-meta-box {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
+            margin-top: -4px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .video-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--accent-red);
+            margin-bottom: 10px;
+        }
+
+        .video-details-grid {
+            display: grid;
+            grid-template-columns: 80px 15px 1fr;
+            font-size: 15px;
+            color: var(--text-dark);
+            line-height: 1.6;
         }
 
         .label {
-            font-weight: 700;
-            width: 100px;
+            font-weight: bold;
+        }
+
+        /* Right Side: Scrollable Playlist Sidebar */
+        .playlist-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        /* Song Card Style (Sidebar format matching user preference) */
+        .song-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s ease, border 0.2s ease, background-color 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .song-card:hover {
+            transform: translateY(-2px);
+            background-color: #f9f9f9;
+        }
+
+        .song-card.active {
+            border: 2px solid var(--accent-red);
+            background-color: #fffbfb;
+        }
+
+        .song-thumb {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-right: 15px;
+            background-color: #ddd;
             flex-shrink: 0;
         }
 
-        .colon {
-            margin-right: 15px;
-            font-weight: 700;
+        .song-details {
+            flex-grow: 1;
+            overflow: hidden;
         }
 
-        .value {
-            font-weight: 700;
+        .song-info {
+            display: grid;
+            grid-template-columns: 55px 10px 1fr;
+            font-size: 13px;
+            color: var(--text-dark);
+            line-height: 1.4;
         }
 
-        /* Responsive styling for smaller screens */
-        @media (max-width: 600px) {
-            .video-card {
-                flex-direction: column;
-                align-items: flex-start;
+        /* Responsive Breakpoint for Mobile/Tablet */
+        @media (max-width: 900px) {
+            .watch-layout {
+                grid-template-columns: 1fr;
             }
-
-            .thumbnail {
-                width: 100%;
-                height: 200px;
-            }
-
-            .info-row {
-                font-size: 1.1rem;
-            }
-
-            .label {
-                width: 80px;
+            .playlist-sidebar {
+                max-height: none;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Header & Short Description -->
-        <header>
-            <h1>KANGLEI ART GALLERY - VIDEO GALLERY</h1>
-            <p>Welcome to our official collection of musical videos, cultural visual arts, and featured performances.</p>
-        </header>
+    <div class="main-header">KANGLEI ART GALLERY</div>
 
-        <!-- Video Gallery List -->
-        <div class="video-list">
+    <div class="watch-layout">
+        <!-- Left: Main Video Player & Metadata -->
+        <div class="primary-player-section">
+            <div class="player-container">
+                <div class="video-wrapper">
+                    <iframe id="youtubePlayer" src="https://www.youtube.com/embed/R6b4gahskfI" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            </div>
+            
+            <div class="video-meta-box">
+                <div class="video-title" id="mainTitle">Matam amagi chanabi</div>
+                <div class="video-details-grid">
+                    <span class="label">Singer</span><span>:</span><span id="mainSinger">T. Robindro</span>
+                    <span class="label">Lyrics</span><span>:</span><span id="mainLyrics">T. Manao</span>
+                </div>
+            </div>
+        </div>
 
-            <!-- Video Entry 1 (Your original video) -->
-            <div class="video-card">
-                <img src="gggggg.jpg" alt="Matam amagi chanabi thumbnail" class="thumbnail">
-                <div class="video-info">
-                    <div class="info-row">
-                        <span class="label">Title</span>
-                        <span class="colon">:</span>
-                        <span class="value">Matam amagi chanabi</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Singer</span>
-                        <span class="colon">:</span>
-                        <span class="value">T. Robindro</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">lyrics</span>
-                        <span class="colon">:</span>
-                        <span class="value">T. Manao</span>
-                    </div>
+        <!-- Right: Playlist Sidebar -->
+        <div class="playlist-sidebar" id="playlistContainer">
+            <!-- Song 1 -->
+            <div class="song-card active" onclick="loadVideo('R6b4gahskfI', 'Sumhatpa Helline', 'T. Robindro', 'T. Manao', this)">
+                <img src="https://placehold.co/180x180/009688/ffffff?text=Track+1" alt="Thumbnail" class="song-thumb">
+                <div class="song-details">
+                    <div class="song-info"><span class="label">Title</span><span>:</span><span>Sumhatpa Helline</span></div>
+                    <div class="song-info"><span class="label">Singer</span><span>:</span><span>T. Brikamaditya</span></div>
+                    <div class="song-info"><span class="label">Lyrics</span><span>:</span><span>T. Manao</span></div>
                 </div>
             </div>
 
-            <!-- Video Entry 2 -->
-            <div class="video-card">
-                <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80" alt="Video thumbnail" class="thumbnail">
-                <div class="video-info">
-                    <div class="info-row">
-                        <span class="label">Title</span>
-                        <span class="colon">:</span>
-                        <span class="value">Nangbu Nungshi</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Singer</span>
-                        <span class="colon">:</span>
-                        <span class="value">R.K. Suresh</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">lyrics</span>
-                        <span class="colon">:</span>
-                        <span class="value">M. Sanatomba</span>
-                    </div>
+            <!-- Song 2 -->
+            <div class="song-card" onclick="loadVideo('pK1cpnCT-NM', 'Wahang Amagi Wakhalda', this)">
+                <img src="https://www.youtube.com/watch?v=pK1cpnCT-NM" class="song-thumb">
+                <div class="song-details">
+                    <div class="song-info"><span class="label">Title</span><span>:</span><span>'Wahang Amagi Wakhalda</span></div>
+                    <div class="song-info"><span class="label">Singer</span><span>:</span><span>L Mema</span></div>
+                    <div class="song-info"><span class="label">Lyrics</span><span>:</span><span>M. Sanatomba</span></div>
+                </div>
+            </div>
+            <!-- Song 3 -->
+            <div class="song-card active" onclick="loadVideo('iN1_0iMd_sI', 'Unaba Fangdrasu', 'Kunjabihari', 'T. Manao', this)">
+                <img src="https://placehold.co/180x180/009688/ffffff?text=Track+1" alt="Thumbnail" class="song-thumb">
+                <div class="song-details">
+                    <div class="song-info"><span class="label">Title</span><span>:</span><span>Matam amagi chanabi</span></div>
+                    <div class="song-info"><span class="label">Singer</span><span>:</span><span>T. Robindro</span></div>
+                    <div class="song-info"><span class="label">Lyrics</span><span>:</span><span>T. Manao</span></div>
                 </div>
             </div>
 
-            <!-- Video Entry 3 -->
-            <div class="video-card">
-                <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=400&q=80" alt="Video thumbnail" class="thumbnail">
-                <div class="video-info">
-                    <div class="info-row">
-                        <span class="label">Title</span>
-                        <span class="colon">:</span>
-                        <span class="value">Thawai Oiriba</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Singer</span>
-                        <span class="colon">:</span>
-                        <span class="value">L. Bidyalaxmi</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">lyrics</span>
-                        <span class="colon">:</span>
-                        <span class="value">K. Hemanta</span>
-                    </div>
+            <!-- Song 4 -->
+            <div class="song-card" onclick="loadVideo('4ciz3xLqojI', 'Wahang Amagi Wakhalda', this)">
+                <img src="https://www.youtube.com/watch?v=pK1cpnCT-NM" class="song-thumb">
+                <div class="song-details">
+                    <div class="song-info"><span class="label">Title</span><span>:</span><span>Nangbu Nungshi</span></div>
+                    <div class="song-info"><span class="label">Singer</span><span>:</span><span>R.K. Suresh</span></div>
+                    <div class="song-info"><span class="label">Lyrics</span><span>:</span><span>M. Sanatomba</span></div>
+                </div>
+            </div>
+<!-- Song 5 -->
+            <div class="song-card active" onclick="loadVideo('R6b4gahskfI', 'Sumhatpa Helline', 'T. Robindro', 'T. Manao', this)">
+                <img src="https://placehold.co/180x180/009688/ffffff?text=Track+1" alt="Thumbnail" class="song-thumb">
+                <div class="song-details">
+                    <div class="song-info"><span class="label">Title</span><span>:</span><span>Matam amagi chanabi</span></div>
+                    <div class="song-info"><span class="label">Singer</span><span>:</span><span>T. Robindro</span></div>
+                    <div class="song-info"><span class="label">Lyrics</span><span>:</span><span>T. Manao</span></div>
                 </div>
             </div>
 
+            <!-- Song 6 -->
+            <div class="song-card" onclick="loadVideo('4ciz3xLqojI', 'Wahang Amagi Wakhalda', this)">
+                <img src="https://www.youtube.com/watch?v=pK1cpnCT-NM" class="song-thumb">
+                <div class="song-details">
+                    <div class="song-info"><span class="label">Title</span><span>:</span><span>Nangbu Nungshi</span></div>
+                    <div class="song-info"><span class="label">Singer</span><span>:</span><span>R.K. Suresh</span></div>
+                    <div class="song-info"><span class="label">Lyrics</span><span>:</span><span>M. Sanatomba</span></div>
+                </div>
+            </div>
+<!-- Song 7 -->
+            <div class="song-card active" onclick="loadVideo('R6b4gahskfI', 'Sumhatpa Helline', 'T. Robindro', 'T. Manao', this)">
+                <img src="https://placehold.co/180x180/009688/ffffff?text=Track+1" alt="Thumbnail" class="song-thumb">
+                <div class="song-details">
+                    <div class="song-info"><span class="label">Title</span><span>:</span><span>Matam amagi chanabi</span></div>
+                    <div class="song-info"><span class="label">Singer</span><span>:</span><span>T. Robindro</span></div>
+                    <div class="song-info"><span class="label">Lyrics</span><span>:</span><span>T. Manao</span></div>
+                </div>
+            </div>
+
+            <!-- Song 8 -->
+            <div class="song-card" onclick="loadVideo('4ciz3xLqojI', 'Wahang Amagi Wakhalda', this)">
+                <img src="https://www.youtube.com/watch?v=pK1cpnCT-NM" class="song-thumb">
+                <div class="song-details">
+                    <div class="song-info"><span class="label">Title</span><span>:</span><span>Nangbu Nungshi</span></div>
+                    <div class="song-info"><span class="label">Singer</span><span>:</span><span>R.K. Suresh</span></div>
+                    <div class="song-info"><span class="label">Lyrics</span><span>:</span><span>M. Sanatomba</span></div>
+                </div>
+            </div>
+<!-- Song 9 -->
+            <div class="song-card active" onclick="loadVideo('R6b4gahskfI', 'Sumhatpa Helline', 'T. Robindro', 'T. Manao', this)">
+                <img src="https://placehold.co/180x180/009688/ffffff?text=Track+1" alt="Thumbnail" class="song-thumb">
+                <div class="song-details">
+                    <div class="song-info"><span class="label">Title</span><span>:</span><span>Matam amagi chanabi</span></div>
+                    <div class="song-info"><span class="label">Singer</span><span>:</span><span>T. Robindro</span></div>
+                    <div class="song-info"><span class="label">Lyrics</span><span>:</span><span>T. Manao</span></div>
+                </div>
+            </div>
+
+            <!-- Song 10 -->
+            <div class="song-card" onclick="loadVideo('4ciz3xLqojI', 'Wahang Amagi Wakhalda', this)">
+                <img src="https://www.youtube.com/watch?v=pK1cpnCT-NM" class="song-thumb">
+                <div class="song-details">
+                    <div class="song-info"><span class="label">Title</span><span>:</span><span>Nangbu Nungshi</span></div>
+                    <div class="song-info"><span class="label">Singer</span><span>:</span><span>R.K. Suresh</span></div>
+                    <div class="song-info"><span class="label">Lyrics</span><span>:</span><span>M. Sanatomba</span></div>
+                </div>
+            </div>
+
+
+            <!-- Song 11 -->
+            <div class="song-card" onclick="loadVideo('R6b4gahskfI', 'Thawai Oiriba', 'L. Bidyalaxmi', 'K. Hemanta', this)">
+                <img src="https://placehold.co/180x180/009688/ffffff?text=Track+3" alt="Thumbnail" class="song-thumb">
+                <div class="song-details">
+                    <div class="song-info"><span class="label">Title</span><span>:</span><span>Thawai Oiriba</span></div>
+                    <div class="song-info"><span class="label">Singer</span><span>:</span><span>L. Bidyalaxmi</span></div>
+                    <div class="song-info"><span class="label">Lyrics</span><span>:</span><span>K. Hemanta</span></div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        /**
+         * Loads the selected YouTube video into the main watch player and updates metadata info instantly.
+         */
+        function loadVideo(videoId, title, singer, lyrics, element) {
+            var iframe = document.getElementById('youtubePlayer');
+            var titleEl = document.getElementById('mainTitle');
+            var singerEl = document.getElementById('mainSinger');
+            var lyricsEl = document.getElementById('mainLyrics');
+            var cards = document.querySelectorAll('.song-card');
+
+            // Update main player iframe source with autoplay
+            iframe.src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1";
+
+            // Update metadata details below player
+            titleEl.textContent = title;
+            singerEl.textContent = singer;
+            lyricsEl.textContent = lyrics;
+
+            // Highlight active playlist card
+            cards.forEach(card => card.classList.remove('active'));
+            element.classList.add('active');
+        }
+    </script>
 
 </body>
 </html>
