@@ -18,10 +18,9 @@
         }
 
         body {
-            /* Emerald green theme matching the rest of the gallery */
             background-color: #00A86B;
             min-height: 100vh;
-            padding: 40px 20px 0 20px;
+            padding: 30px 20px 90px 20px; /* Extra bottom padding for sticky player */
             color: #1a1a1a;
             display: flex;
             flex-direction: column;
@@ -37,32 +36,32 @@
         /* Header Styling */
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             color: #ffffff;
             text-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }
 
         header h1 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 800;
             letter-spacing: 1px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             text-transform: uppercase;
         }
 
         header p {
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             opacity: 0.95;
             max-width: 600px;
             margin: 0 auto;
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
         /* Search Bar */
         .controls-bar {
             display: flex;
             justify-content: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .search-box {
@@ -73,132 +72,188 @@
 
         .search-box input {
             width: 100%;
-            padding: 14px 48px 14px 20px;
-            border-radius: 12px;
+            padding: 12px 42px 12px 16px;
+            border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.4);
-            font-size: 1rem;
+            font-size: 0.95rem;
             outline: none;
             background: rgba(255, 255, 255, 0.98);
             color: #1a1a1a;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: all 0.2s ease;
-        }
-
-        .search-box input:focus {
-            box-shadow: 0 6px 20px rgba(0,0,0,0.18);
-            transform: translateY(-1px);
         }
 
         .search-box i {
             position: absolute;
-            right: 18px;
+            right: 16px;
             top: 50%;
             transform: translateY(-50%);
             color: #666;
-            font-size: 1.1rem;
         }
 
-        /* Audio Cards List */
+        /* Slim Audio List Layout */
         .audio-list {
             display: flex;
             flex-direction: column;
-            gap: 25px;
-            padding-bottom: 40px;
+            gap: 10px;
+            padding-bottom: 30px;
         }
 
-        .audio-card {
+        .audio-row-card {
             background-color: rgba(255, 255, 255, 0.96);
-            border-radius: 12px;
-            padding: 22px;
-            display: flex;
-            align-items: flex-start;
-            gap: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            backdrop-filter: blur(5px);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .audio-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        .audio-icon {
-            width: 110px;
-            height: 110px;
-            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-            color: #00A86B;
             border-radius: 10px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: 2px solid transparent;
+        }
+
+        .audio-row-card:hover {
+            background-color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .audio-row-card.active {
+            border-color: #004d26;
+            background-color: #f0fdf4;
+        }
+
+        .audio-meta {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .audio-mini-icon {
+            width: 36px;
+            height: 36px;
+            background: #e8f5e9;
+            color: #00A86B;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 1rem;
             flex-shrink: 0;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
         }
 
-        .audio-info {
+        .audio-details {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            font-size: 1.15rem;
-            color: #000000;
-            padding-top: 2px;
-            flex: 1;
-            width: 100%;
+            gap: 2px;
+            min-width: 0;
         }
 
-        .info-row {
-            display: flex;
-            align-items: baseline;
-        }
-
-        .label {
-            font-weight: 800;
-            width: 110px;
-            flex-shrink: 0;
-            color: #111827;
-        }
-
-        .colon {
-            margin-right: 12px;
-            font-weight: 800;
-            color: #111827;
-        }
-
-        .value {
+        .audio-title-artist {
+            font-size: 0.95rem;
             font-weight: 700;
-            color: #000000;
-            font-size: 1.2rem;
+            color: #111827;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .value-desc {
+        .audio-title-artist span {
             font-weight: 500;
-            color: #374151;
-            line-height: 1.5;
-            font-size: 1.05rem;
+            color: #4b5563;
+            font-size: 0.85rem;
         }
 
-        /* HTML Audio Player */
-        .audio-player-container {
-            margin-top: 10px;
-            width: 100%;
+        .audio-desc {
+            font-size: 0.8rem;
+            color: #6b7280;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        audio {
+        .select-hint {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #00A86B;
+            background: #e8f5e9;
+            padding: 4px 10px;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        /* Common Master Player Bar */
+        .master-player-bar {
+            position: fixed;
+            bottom: 60px; /* Sits right above bottom nav */
+            left: 50%;
+            transform: translateX(-50%);
             width: 100%;
-            height: 40px;
-            border-radius: 8px;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            z-index: 60;
+            border-top: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .now-playing-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .now-playing-info i {
+            font-size: 1.5rem;
+            color: #00A86B;
+            animation: pulse 2s infinite;
+        }
+
+        .np-text {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .np-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #111827;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .np-subtitle {
+            font-size: 0.78rem;
+            color: #6b7280;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .master-audio-element {
+            width: 320px;
+            height: 36px;
             outline: none;
         }
 
         .no-results {
             background: white;
-            padding: 30px;
-            border-radius: 12px;
+            padding: 25px;
+            border-radius: 10px;
             text-align: center;
             color: #4b5563;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
         }
 
@@ -208,13 +263,14 @@
             border-top: 1px solid rgba(0,0,0,0.08);
             display: flex;
             justify-content: space-around;
-            padding: 16px;
-            position: sticky;
+            padding: 14px;
+            position: fixed;
             bottom: 0;
-            margin: 0 -20px;
+            left: 0;
+            width: 100%;
             box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
             backdrop-filter: blur(10px);
-            z-index: 50;
+            z-index: 70;
         }
 
         .nav-link {
@@ -224,7 +280,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             transition: color 0.2s;
         }
 
@@ -232,40 +288,19 @@
             color: #007a4d;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
             body {
-                padding: 24px 12px 0 12px;
+                padding-bottom: 120px;
             }
-
-            header h1 {
-                font-size: 1.5rem;
-            }
-
-            .audio-card {
+            .master-player-bar {
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 16px;
+                align-items: stretch;
+                gap: 8px;
+                padding: 10px 15px;
+                bottom: 52px;
             }
-
-            .audio-icon {
+            .master-audio-element {
                 width: 100%;
-                height: 90px;
-            }
-
-            .info-row {
-                font-size: 1rem;
-            }
-
-            .label {
-                width: 80px;
-            }
-
-            .value {
-                font-size: 1.05rem;
-            }
-            
-            .bottom-nav {
-                margin: 0 -12px;
             }
         }
     </style>
@@ -275,22 +310,36 @@
     <div class="container">
         <!-- Header -->
         <header>
-            <h1>KANGLEI ART GALLERY - SONG GALLERY</h1>
-            <p>Listen to traditional folk songs, contemporary tracks, and musical compositions.</p>
+            <h1>Song Gallery</h1>
+            <p>Select a track below and play it using the master player at the bottom.</p>
         </header>
 
         <!-- Search Control -->
         <div class="controls-bar">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search songs by title, artist, or description..." onkeyup="filterSongs()">
+                <input type="text" id="searchInput" placeholder="Search songs..." onkeyup="filterSongs()">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
         </div>
 
-        <!-- Audio List -->
+        <!-- Slim Audio List -->
         <div class="audio-list" id="audioList">
             <!-- Rendered dynamically via JavaScript -->
         </div>
+    </div>
+
+    <!-- Common Master Player Bar -->
+    <div class="master-player-bar">
+        <div class="now-playing-info">
+            <i class="fa-solid fa-compact-disc"></i>
+            <div class="np-text">
+                <span class="np-title" id="npTitle">Select a track</span>
+                <span class="np-subtitle" id="npSubtitle">Ready to play</span>
+            </div>
+        </div>
+        <audio id="masterAudio" class="master-audio-element" controls preload="none">
+            Your browser does not support the audio element.
+        </audio>
     </div>
 
     <!-- Bottom Navigation Bar -->
@@ -301,32 +350,14 @@
     </div>
 
     <script>
-        // Sample songs database referencing 'audio/karamna.mp3'
         const songs = [
-            {
-                id: 1,
-                title: "Karamna (Folk Melody)",
-                artist: "Traditional Artist",
-                description: "A soul-touching melody capturing the essence and rich cultural rhythm of traditional folk compositions.",
-                audioUrl: "audio/karamna.mp3"
-            },
-            {
-                id: 2,
-                title: "Karamna (Acoustic Version)",
-                artist: "Kanglei Ensemble",
-                description: "An acoustic rendition performed with traditional folk instruments and vocal harmonies.",
-                audioUrl: "audio/karamna.mp3"
-            },
-            {
-                id: 3,
-                title: "Karamna (Instrumental Tale)",
-                artist: "Cultural Troupe",
-                description: "An expressive instrumental track showcasing classic musical arrangements.",
-                audioUrl: "audio/karamna.mp3"
-            }
+            { id: 1, title: "Karamna (Folk Melody)", artist: "Traditional Artist", description: "Soul-touching traditional folk rhythm.", audioUrl: "audio/karamna.mp3" },
+            { id: 2, title: "Karamna (Acoustic Version)", artist: "Kanglei Ensemble", description: "Performed with classic folk instruments.", audioUrl: "audio/karamna.mp3" },
+            { id: 3, title: "Karamna (Instrumental Tale)", artist: "Cultural Troupe", description: "Expressive instrumental arrangement.", audioUrl: "audio/karamna.mp3" },
+            { id: 4, title: "Morning Rhythms", artist: "Local Creators", description: "Fresh acoustic morning vibes.", audioUrl: "audio/karamna.mp3" },
+            { id: 5, title: "Festival Echoes", artist: "Community Artists", description: "Celebratory cultural tracks.", audioUrl: "audio/karamna.mp3" }
         ];
 
-        // Render songs to screen
         function renderSongs(songArray) {
             const container = document.getElementById('audioList');
             container.innerHTML = '';
@@ -334,49 +365,51 @@
             if (songArray.length === 0) {
                 container.innerHTML = `
                     <div class="no-results">
-                        <i class="fa-solid fa-music" style="font-size:2rem; margin-bottom:10px; color:#00A86B;"></i>
-                        <p>No songs found matching your search.</p>
+                        <i class="fa-solid fa-music" style="color:#00A86B; margin-right:8px;"></i> No songs found.
                     </div>
                 `;
                 return;
             }
 
-            songArray.forEach(song => {
+            songArray.forEach((song, index) => {
                 const card = document.createElement('div');
-                card.className = 'audio-card';
+                card.className = 'audio-row-card';
+                card.id = `song-card-${song.id}`;
                 card.innerHTML = `
-                    <div class="audio-icon">
-                        <i class="fa-solid fa-music"></i>
-                    </div>
-                    <div class="audio-info">
-                        <div class="info-row">
-                            <span class="label">Title</span>
-                            <span class="colon">:</span>
-                            <span class="value">${song.title}</span>
+                    <div class="audio-meta">
+                        <div class="audio-mini-icon">
+                            <i class="fa-solid fa-music"></i>
                         </div>
-                        <div class="info-row">
-                            <span class="label">Artist</span>
-                            <span class="colon">:</span>
-                            <span class="value-desc">${song.artist}</span>
-                        </div>
-                        <div class="info-row" style="align-items: flex-start;">
-                            <span class="label">Details</span>
-                            <span class="colon">:</span>
-                            <span class="value-desc">${song.description}</span>
-                        </div>
-                        <div class="audio-player-container">
-                            <audio controls preload="metadata">
-                                <source src="${song.audioUrl}" type="audio/mpeg">
-                                Your browser does not support the audio element.
-                            </audio>
+                        <div class="audio-details">
+                            <div class="audio-title-artist">${song.title} <span>— ${song.artist}</span></div>
+                            <div class="audio-desc">${song.description}</div>
                         </div>
                     </div>
+                    <div class="select-hint"><i class="fa-solid fa-play"></i> Select & Play</div>
                 `;
+                
+                // Clicking the row loads the track into the master player and plays it automatically
+                card.onclick = () => selectAndPlaySong(song);
                 container.appendChild(card);
             });
         }
 
-        // Filter Songs on search input
+        function selectAndPlaySong(song) {
+            // Update active state visual styling across rows
+            document.querySelectorAll('.audio-row-card').forEach(c => c.classList.remove('active'));
+            const selectedCard = document.getElementById(`song-card-${song.id}`);
+            if (selectedCard) selectedCard.classList.add('active');
+
+            // Update Master Player UI
+            document.getElementById('npTitle').textContent = song.title;
+            document.getElementById('npSubtitle').textContent = `${song.artist} — ${song.description}`;
+
+            // Load and Play Audio
+            const masterAudio = document.getElementById('masterAudio');
+            masterAudio.src = song.audioUrl;
+            masterAudio.play();
+        }
+
         function filterSongs() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const filtered = songs.filter(s => 
@@ -387,7 +420,6 @@
             renderSongs(filtered);
         }
 
-        // Initial render on page load
         renderSongs(songs);
     </script>
 </body>
