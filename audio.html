@@ -1,1 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Gallery - Kanglei Gallery</title>
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
 
+        body {
+            /* Emerald green theme matching the rest of the gallery */
+            background-color: #00A86B;
+            min-height: 100vh;
+            padding: 40px 20px 0 20px;
+            color: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Header Styling */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        header p {
+            font-size: 1.05rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Search Bar */
+        .controls-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 48px 14px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            font-size: 1rem;
+            outline: none;
+            background: rgba(255, 255, 255, 0.98);
+            color: #1a1a1a;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+        }
+
+        .search-box input:focus {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+            transform: translateY(-1px);
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Audio Cards List */
+        .audio-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            padding-bottom: 40px;
+        }
+
+        .audio-card {
+            background-color: rgba(255, 255, 255, 0.96);
+            border-radius: 12px;
+            padding: 22px;
+            display: flex;
+            align-items: flex-start;
+            gap: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .audio-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .audio-icon {
+            width: 110px;
+            height: 110px;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #00A86B;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            flex-shrink: 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .audio-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 1.15rem;
+            color: #000000;
+            padding-top: 2px;
+            flex: 1;
+            width: 100%;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: baseline;
+        }
+
+        .label {
+            font-weight: 800;
+            width: 110px;
+            flex-shrink: 0;
+            color: #111827;
+        }
+
+        .colon {
+            margin-right: 12px;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .value {
+            font-weight: 700;
+            color: #000000;
+            font-size: 1.2rem;
+        }
+
+        .value-desc {
+            font-weight: 500;
+            color: #374151;
+            line-height: 1.5;
+            font-size: 1.05rem;
+        }
+
+        /* HTML Audio Player */
+        .audio-player-container {
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        audio {
+            width: 100%;
+            height: 40px;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .no-results {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            color: #4b5563;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            background-color: rgba(255, 255, 255, 0.98);
+            border-top: 1px solid rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-around;
+            padding: 16px;
+            position: sticky;
+            bottom: 0;
+            margin: 0 -20px;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            z-index: 50;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #00A86B;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #007a4d;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 24px 12px 0 12px;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .audio-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .audio-icon {
+                width: 100%;
+                height: 90px;
+            }
+
+            .info-row {
+                font-size: 1rem;
+            }
+
+            .label {
+                width: 80px;
+            }
+
+            .value {
+                font-size: 1.05rem;
+            }
+            
+            .bottom-nav {
+                margin: 0 -12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>KANGLEI ART GALLERY - SONG GALLERY</h1>
+            <p>Listen to traditional folk songs, contemporary tracks, and musical compositions.</p>
+        </header>
+
+        <!-- Search Control -->
+        <div class="controls-bar">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search songs by title, artist, or description..." onkeyup="filterSongs()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+        </div>
+
+        <!-- Audio List -->
+        <div class="audio-list" id="audioList">
+            <!-- Rendered dynamically via JavaScript -->
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav">
+        <a href="register.html" class="nav-link"><i class="fa-solid fa-user-plus"></i> Register</a>
+        <a href="login.html" class="nav-link"><i class="fa-solid fa-right-to-bracket"></i> Log In</a>
+        <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+    </div>
+
+    <script>
+        // Sample songs database referencing 'audio/karamna.mp3'
+        const songs = [
+            {
+                id: 1,
+                title: "Karamna (Folk Melody)",
+                artist: "Traditional Artist",
+                description: "A soul-touching melody capturing the essence and rich cultural rhythm of traditional folk compositions.",
+                audioUrl: "audio/karamna.mp3"
+            },
+            {
+                id: 2,
+                title: "Karamna (Acoustic Version)",
+                artist: "Kanglei Ensemble",
+                description: "An acoustic rendition performed with traditional folk instruments and vocal harmonies.",
+                audioUrl: "audio/karamna.mp3"
+            },
+            {
+                id: 3,
+                title: "Karamna (Instrumental Tale)",
+                artist: "Cultural Troupe",
+                description: "An expressive instrumental track showcasing classic musical arrangements.",
+                audioUrl: "audio/karamna.mp3"
+            }
+        ];
+
+        // Render songs to screen
+        function renderSongs(songArray) {
+            const container = document.getElementById('audioList');
+            container.innerHTML = '';
+
+            if (songArray.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <i class="fa-solid fa-music" style="font-size:2rem; margin-bottom:10px; color:#00A86B;"></i>
+                        <p>No songs found matching your search.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            songArray.forEach(song => {
+                const card = document.createElement('div');
+                card.className = 'audio-card';
+                card.innerHTML = `
+                    <div class="audio-icon">
+                        <i class="fa-solid fa-music"></i>
+                    </div>
+                    <div class="audio-info">
+                        <div class="info-row">
+                            <span class="label">Title</span>
+                            <span class="colon">:</span>
+                            <span class="value">${song.title}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Artist</span>
+                            <span class="colon">:</span>
+                            <span class="value-desc">${song.artist}</span>
+                        </div>
+                        <div class="info-row" style="align-items: flex-start;">
+                            <span class="label">Details</span>
+                            <span class="colon">:</span>
+                            <span class="value-desc">${song.description}</span>
+                        </div>
+                        <div class="audio-player-container">
+                            <audio controls preload="metadata">
+                                <source src="${song.audioUrl}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Filter Songs on search input
+        function filterSongs() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = songs.filter(s => 
+                s.title.toLowerCase().includes(query) || 
+                s.artist.toLowerCase().includes(query) ||
+                s.description.toLowerCase().includes(query)
+            );
+            renderSongs(filtered);
+        }
+
+        // Initial render on page load
+        renderSongs(songs);
+    </script>
+</body>
+</html>
