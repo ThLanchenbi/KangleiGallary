@@ -50,8 +50,36 @@
         font-size: 1.05rem;
         opacity: 0.95;
         max-width: 600px;
-        margin: 0 auto;
+        margin: 0 auto 18px auto;
         line-height: 1.5;
+    }
+
+    /* Hear About Us Button */
+    .hear-us-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background-color: #ffffff;
+        color: #00A86B;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-size: 0.95rem;
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.2s ease;
+    }
+
+    .hear-us-btn:hover {
+        background-color: #f8fafc;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .hear-us-btn.playing {
+        background-color: #111827;
+        color: #ffffff;
     }
 
     .about-card {
@@ -251,6 +279,12 @@
   <header class="header">
     <h1>About Kanglei Gallery</h1>
     <p>An open community platform to discover, enjoy, and share creative works.</p>
+    
+    <!-- Hear About Us Audio Button -->
+    <button class="hear-us-btn" id="audioBtn" onclick="playAboutAudio()">
+        <i class="fa-solid fa-volume-high" id="audioIcon"></i> <span id="audioText">Hear About Us</span>
+    </button>
+    <audio id="aboutAudio" src="audio/karamna.mpeg"></audio>
   </header>
 
   <main class="about-container">
@@ -347,6 +381,34 @@
     <a href="login.html" class="nav-btn"><i class="fa-solid fa-right-to-bracket"></i> Log In</a>
     <a href="index.html" class="nav-btn"><i class="fa-solid fa-house"></i> Home</a>
   </footer>
+
+  <script>
+    function playAboutAudio() {
+        const audio = document.getElementById('aboutAudio');
+        const btn = document.getElementById('audioBtn');
+        const icon = document.getElementById('audioIcon');
+        const text = document.getElementById('audioText');
+
+        if (audio.paused) {
+            audio.play();
+            btn.classList.add('playing');
+            icon.className = 'fa-solid fa-pause';
+            text.textContent = 'Pause Audio';
+        } else {
+            audio.pause();
+            btn.classList.remove('playing');
+            icon.className = 'fa-solid fa-volume-high';
+            text.textContent = 'Hear About Us';
+        }
+
+        // Reset button state when audio finishes playing
+        audio.onended = function() {
+            btn.classList.remove('playing');
+            icon.className = 'fa-solid fa-volume-high';
+            text.textContent = 'Hear About Us';
+        };
+    }
+  </script>
 
 </body>
 </html>
