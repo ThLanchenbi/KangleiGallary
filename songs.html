@@ -177,10 +177,10 @@
         .player-controls-right {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
-        .shuffle-btn {
+        .control-btn {
             background: #e8f5e9;
             color: #00A86B;
             border: 1px solid #c8e6c9;
@@ -196,11 +196,11 @@
             flex-shrink: 0;
         }
 
-        .shuffle-btn:hover {
+        .control-btn:hover {
             background: #d0ebd2;
         }
 
-        .shuffle-btn.active {
+        .control-btn.active {
             background: #00A86B;
             color: #ffffff;
             border-color: #007a4d;
@@ -208,7 +208,7 @@
         }
 
         .master-audio-element {
-            width: 280px;
+            width: 260px;
             height: 40px;
             outline: none;
             border-radius: 20px;
@@ -401,8 +401,12 @@
             
             <div class="player-controls-right">
                 <!-- Shuffle Toggle Button -->
-                <button class="shuffle-btn" id="shuffleBtn" onclick="toggleShuffle()" title="Toggle Shuffle">
+                <button class="control-btn" id="shuffleBtn" onclick="toggleShuffle()" title="Toggle Shuffle">
                     <i class="fa-solid fa-shuffle"></i>
+                </button>
+                <!-- Next Track Button -->
+                <button class="control-btn" id="nextBtn" onclick="playNextSong()" title="Next Song">
+                    <i class="fa-solid fa-forward-step"></i>
                 </button>
                 <audio id="masterAudio" class="master-audio-element" controls preload="none">
                     Your browser does not support the audio element.
@@ -424,11 +428,14 @@
     </div>
 
     <script>
-        // Corrected song array mapping to exact repository filenames
         const songs = [
             { id: 1, title: "Karamna Utlashige", artist: "AIGiten", description: "Soul-touching traditional rhythm.", audioUrl: "audio/karamna.mp3" },
             { id: 2, title: "Punshigi Anganba Ayukta", artist: "AIGiten", description: "Performed with classic style.", audioUrl: "audio/punshigi%20anganba%20ayukta.mp3" },
             { id: 3, title: "Nisha Nisha", artist: "AIGiten", description: "Expressive instrumental arrangement.", audioUrl: "audio/nisha%20nisha.mp3" },
+            { id: 8, title: "Leichilgi Meichak", artist: "Local Artists", description: "Melodic cultural composition.", audioUrl: "audio/Leichilgi.mp3" },
+            { id: 9, title: "Sumhatpa Helline", artist: "Local Artists", description: "Melodic cultural composition.", audioUrl: "audio/7.mp3" },
+            { id: 10, title: "Pirangi marupni", artist: "Local Artists", description: "Melodic cultural composition.", audioUrl: "audio/Pirangi.mp3" },
+            { id: 20, title: "Wahang Amagi", artist: "Traditional", description: "Folk music piece.", audioUrl: "audio/about.mp3" },
             { id: 21, title: "Leihanning", artist: "AIGiten", description: "Soul-touching traditional rhythm.", audioUrl: "audio/leihanning%20.mp3" }
         ];
 
@@ -448,8 +455,8 @@
             shuffleBtn.classList.toggle('active', isShuffleOn);
         }
 
-        // When a song ends, automatically go to next or shuffle random
-        masterAudio.onended = () => {
+        // Logic for selecting the next song (used by both Next button & song completion)
+        function playNextSong() {
             if (songs.length === 0) return;
 
             let nextSong;
@@ -467,6 +474,11 @@
             if (nextSong) {
                 selectAndPlaySong(nextSong);
             }
+        }
+
+        // Automatically go to the next track when current one finishes
+        masterAudio.onended = () => {
+            playNextSong();
         };
 
         function renderSongs(songArray) {
